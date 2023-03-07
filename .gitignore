@@ -370,3 +370,5 @@ FodyWeavers.xsd
 /CoreAngApp/Migrations/DataSync/20230307055624_DatasyncOpt.cs
 /CoreAngApp/Migrations/AuditLog/AuditLogContextModelSnapshot.cs
 /CoreAngApp/Migrations/AuditLog/20230307055618_AuditLog.cs
+/CoreAngApp/ClientApp/.angular/cache/15.2.0/angular-webpack/1c9df0de550aaa5152b8fa369bee0b83be980b01
+/CoreAngApp/ClientApp/.angular/cache/15.2.0/babel-webpack
