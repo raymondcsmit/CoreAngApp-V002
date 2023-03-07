@@ -32,7 +32,7 @@ namespace ConfigureApp.Infrastructure
                     entity.HasKey(e => e.Id).HasAnnotation("Sqlite:Autoincrement", true);               
                 else
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
-
+                entity.Ignore(e => e.ApplicationId);
                 entity.HasMany(e => e.Forms).WithOne(e => e.Application).HasForeignKey(e => e.Id);
             });
 
@@ -43,6 +43,7 @@ namespace ConfigureApp.Infrastructure
                 else
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
+                entity.Ignore(e => e.FormId);
                 entity.HasMany(e => e.Fields).WithOne(e => e.Form).HasForeignKey(e => e.Id);
                 entity.HasMany(e => e.DisplayedColumns).WithOne(e => e.Form).HasForeignKey(e => e.Id);
             });
@@ -54,6 +55,7 @@ namespace ConfigureApp.Infrastructure
                 else
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
+                entity.Ignore(e => e.FieldId);
                 entity.HasMany(e => e.Options).WithOne(e => e.Field).HasForeignKey(e => e.Id);
             });
 
@@ -63,6 +65,8 @@ namespace ConfigureApp.Infrastructure
                     entity.HasKey(e => e.Id).HasAnnotation("Sqlite:Autoincrement", true);
                 else
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Ignore(e => e.OptionId);
             });
 
             modelBuilder.Entity<DisplayedColumn>(entity =>
@@ -71,6 +75,8 @@ namespace ConfigureApp.Infrastructure
                     entity.HasKey(e => e.Id).HasAnnotation("Sqlite:Autoincrement", true);
                 else
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
+
+                entity.Ignore(e => e.DisplayedColumnId);
             });
         }
     }

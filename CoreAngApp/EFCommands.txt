@@ -6,19 +6,52 @@ Add-Migration AuditLog -Context AuditLogContext
 Update-Database -Context AuditLogContext
 Add-Migration DatasyncOpt -Context DataSyncContext
 Update-Database -Context DataSyncContext
+Add-Migration DatasyncOpt -Context ConfigureAppDbContext
+Update-Database -Context ConfigureAppDbContext
+
 
 
 
 Add-Migration SecurityApp -Context ApplicationDbContext
 Add-Migration AuditLog -Context AuditLogContext
 Add-Migration DatasyncOpt -Context DataSyncContext
+Add-Migration ConfigureApp -Context ConfigureAppDbContext
 
 
 Update-Database -Context ApplicationDbContext
 Update-Database -Context AuditLogContext
 Update-Database -Context DataSyncContext
+Update-Database -Context ConfigureAppDbContext
+
 
 
 Add-Migration DatasyncOpt -Context DataSyncContext -Project DataSyncApp.Infrastructure
 Update-Database -Context ApplicationDbContext -Verbose
 Update-Database -Context AuditLogContext -Verbose
+
+
+
+If you have made changes to your entities after running the migration and updating the database,
+you can use Entity Framework Core's migration feature to apply the changes to the database.
+
+To update the database with the new changes, you will need to create a new migration that captures
+the changes you have made to your entities. You can do this by running the following command in the 
+Package Manager Console:
+
+Add-Migration <migration_name>
+Example:  Add-Migration ConfigureApp01 -Context ConfigureAppDbContext
+
+Replace <migration_name> with a descriptive name for your migration. This will create a new migration 
+file in your project's Migrations folder.
+
+Once you have created the migration, you can apply the changes to the database by running the following
+command in the Package Manager Console:
+
+Update-Database
+Example: Update-Database -Context ConfigureAppDbContext
+
+This will apply any pending migrations to the database, including the new migration you just created. 
+If there are no pending migrations, this command will do nothing.
+
+Note that if you make changes to your entities after running the migration and updating the database, 
+you will need to create a new migration and update the database again to apply those changes to the database.
