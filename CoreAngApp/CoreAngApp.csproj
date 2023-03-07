@@ -1,0 +1,148 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <TypeScriptCompileBlocked>true</TypeScriptCompileBlocked>
+    <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>ClientApp\</SpaRoot>
+    <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
+
+    <!-- Set this to true if you enable server-side prerendering -->
+    <BuildServerSideRenderer>false</BuildServerSideRenderer>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" Version="12.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="7.0.3" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.3">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.9.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUI" Version="6.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <Content Remove="ClientApp\.angular\**" />
+    <Content Remove="Controllers\**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Remove="ClientApp\.angular\**" />
+    <None Remove="Controllers\**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="ClientApp\.angular\**" />
+    <Compile Remove="Controllers\**" />
+    <EmbeddedResource Remove="ClientApp\.angular\**" />
+    <EmbeddedResource Remove="Controllers\**" />
+    <TypeScriptCompile Remove="ClientApp\.angular\**" />
+    <TypeScriptCompile Remove="ClientApp\node_modules\**" />
+    <TypeScriptCompile Remove="Controllers\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\dist\138.db7735a52d75998e.js" />
+    <Content Remove="wwwroot\dist\3rdpartylicenses.txt" />
+    <Content Remove="wwwroot\dist\459.27d8fc1717e838ea.js" />
+    <Content Remove="wwwroot\dist\639.089642c6de225469.js" />
+    <Content Remove="wwwroot\dist\651.afa5541118a9079d.js" />
+    <Content Remove="wwwroot\dist\assets\formconfig.json" />
+    <Content Remove="wwwroot\dist\assets\images\avatars\profile.jpg" />
+    <Content Remove="wwwroot\dist\assets\images\backgrounds\dark-material-bg.jpg" />
+    <Content Remove="wwwroot\dist\assets\images\backgrounds\header-bg.png" />
+    <Content Remove="wwwroot\dist\assets\images\flags\tr.png" />
+    <Content Remove="wwwroot\dist\assets\images\flags\us.png" />
+    <Content Remove="wwwroot\dist\assets\images\logo_dark.png" />
+    <Content Remove="wwwroot\dist\favicon.ico" />
+    <Content Remove="wwwroot\dist\index.html" />
+    <Content Remove="wwwroot\dist\main.b95d5373fc3b0f30.js" />
+    <Content Remove="wwwroot\dist\polyfills.805f53650b4cf780.js" />
+    <Content Remove="wwwroot\dist\runtime.3147362a26fc5931.js" />
+    <Content Remove="wwwroot\dist\styles.aff7f8d6258ec54f.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+
+    <None Remove="ClientApp\.gitignore" />
+    <None Remove="ClientApp\src\app\app-routing.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\app-routing.module.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Modules\AuditLog\AuditLog.Infrastructure\AuditLog.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\DataSync\DataSyncApp.Infrastructure\DataSyncApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\Security\SecurityApp.Infrastructure\SecurityApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\dist\138.db7735a52d75998e.js" />
+    <None Include="wwwroot\dist\3rdpartylicenses.txt" />
+    <None Include="wwwroot\dist\459.27d8fc1717e838ea.js" />
+    <None Include="wwwroot\dist\639.089642c6de225469.js" />
+    <None Include="wwwroot\dist\651.afa5541118a9079d.js" />
+    <None Include="wwwroot\dist\assets\formconfig.json" />
+    <None Include="wwwroot\dist\assets\images\avatars\profile.jpg" />
+    <None Include="wwwroot\dist\assets\images\backgrounds\dark-material-bg.jpg" />
+    <None Include="wwwroot\dist\assets\images\backgrounds\header-bg.png" />
+    <None Include="wwwroot\dist\assets\images\flags\tr.png" />
+    <None Include="wwwroot\dist\assets\images\flags\us.png" />
+    <None Include="wwwroot\dist\assets\images\logo_dark.png" />
+    <None Include="wwwroot\dist\favicon.ico" />
+    <None Include="wwwroot\dist\index.html" />
+    <None Include="wwwroot\dist\main.b95d5373fc3b0f30.js" />
+    <None Include="wwwroot\dist\polyfills.805f53650b4cf780.js" />
+    <None Include="wwwroot\dist\runtime.3147362a26fc5931.js" />
+    <None Include="wwwroot\dist\styles.aff7f8d6258ec54f.css" />
+  </ItemGroup>
+
+  <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build:ssr -- --prod" Condition=" '$(BuildServerSideRenderer)' == 'true' " />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <DistFiles Include="$(SpaRoot)node_modules\**" Condition="'$(BuildServerSideRenderer)' == 'true'" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+  <ProjectExtensions><VisualStudio><UserProperties clientapp_4angular_1json__JsonSchema="https://beaujs.com/schema.json" /></VisualStudio></ProjectExtensions>
+
+</Project>

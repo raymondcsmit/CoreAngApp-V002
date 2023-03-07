@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Data\_Maping\**" />
+		<EmbeddedResource Remove="Data\_Maping\**" />
+		<None Remove="Data\_Maping\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Remove="Controllers\AppSettingController.cs" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\Core\Core.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Folder Include="Views\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="MediatR" Version="11.1.0" />
+	</ItemGroup>
+</Project>
