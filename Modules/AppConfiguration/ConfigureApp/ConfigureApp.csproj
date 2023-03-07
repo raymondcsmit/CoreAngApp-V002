@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+	</PropertyGroup>
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
+	<ItemGroup>
+	  <ProjectReference Include="..\..\..\Core\Core.csproj" />
+	  <ProjectReference Include="..\ConfigureApp.Application\ConfigureApp.Application.csproj" />
+	  <ProjectReference Include="..\ConfigureApp.Infrastructure\ConfigureApp.Infrastructure.csproj" />
+	</ItemGroup>
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+		<Exec Command="if not exist &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules&quot; mkdir &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules&quot;" />
+		<Exec Command="if not exist &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules\$(ProjectName)&quot; mkdir &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules\$(ProjectName)&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules\$(ProjectName)\&quot; /Y&#xD;&#xA;&#xD;&#xA;" />
+	</Target>
+</Project>
