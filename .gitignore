@@ -361,3 +361,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/CoreAngApp/AdminLte.db
+/CoreAngApp/AdminLte.db-shm
+/CoreAngApp/AdminLte.db-wal
+/CoreAngApp/Migrations/20230307055613_SecurityApp.cs
+/CoreAngApp/Migrations/ApplicationDbContextModelSnapshot.cs
+/CoreAngApp/Migrations/DataSync/DataSyncContextModelSnapshot.cs
+/CoreAngApp/Migrations/DataSync/20230307055624_DatasyncOpt.cs
+/CoreAngApp/Migrations/AuditLog/AuditLogContextModelSnapshot.cs
+/CoreAngApp/Migrations/AuditLog/20230307055618_AuditLog.cs
