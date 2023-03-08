@@ -22,6 +22,11 @@ const appRoutes: Routes = [
     canActivate: [AuthGuard]
   },
   {
+    path: 'configure',
+    loadChildren: () => import('./configure-app/configure-app.module').then(m => m.ConfigureAppModule),
+    canActivate: [AuthGuard]
+  },
+  {
     path: 'not-found',
     component: NotFoundComponent,
   },
