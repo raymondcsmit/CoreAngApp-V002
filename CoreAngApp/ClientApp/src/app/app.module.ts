@@ -10,7 +10,7 @@ import { NgxsModule } from '@ngxs/store';
 import { LoginState } from './ngrxstore/auth.store';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
+import { GenericNgxsModule } from './generic-ngxs/generic-ngxs.module';
 @NgModule({
   declarations: [
     AppComponent
@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     NgxsModule.forRoot([LoginState]),
     AppRoutingModule, // Main routes for application
     CoreModule,       // Singleton objects (services, components and resources that are loaded only at app.module level)
+    GenericNgxsModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

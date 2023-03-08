@@ -1,31 +1,48 @@
-import { AfterViewInit, ChangeDetectorRef, Component,  ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component,  ComponentRef, Input, OnDestroy, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { filter, map, switchMap } from 'rxjs/operators';
-import { from, Observable } from 'rxjs';
+import { filter, map, switchMap, takeUntil } from 'rxjs/operators';
+import { from, Observable, Subject } from 'rxjs';
 import { defaultObject, Field, FieldOption, GenForm, RootObject } from './models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormComponent } from './form.component';
 import { BaseComponent } from './base.component';
 import { ConfigService } from './configure.service';
+import { Store } from '@ngxs/store';
 @Component({
   selector: 'wrdynamic-component',
   template: `<ng-template #genComponent></ng-template>`,
   //styleUrls: ['./your-component.component.css']
 })
-export class ViewRenderComponent implements OnInit, AfterViewInit {
+export class ViewRenderComponent implements OnInit, AfterViewInit,OnDestroy {
   @ViewChild('genComponent', { read: ViewContainerRef }) genComponent!: ViewContainerRef;
-  @Input() data: any;
+  data: any;
+  stateData$!: Observable<any>;
   private formComponents: { [key: string]: ComponentRef<BaseComponent> } = {};
+  private unsubscribe$: Subject<void> = new Subject();
+  private unsubscribeToState$: Subject<void> = new Subject();
+  constructor(private store: Store,private cdRef: ChangeDetectorRef, private route: ActivatedRoute, private configsrv:ConfigService) { }
 
-  constructor(private cdRef: ChangeDetectorRef, private route: ActivatedRoute, private configsrv:ConfigService) { }
-
-  ngOnInit() {
-    // Subscribe to router events to check for the 'reload' query parameter
+  ngOnInit() {}
+  ngOnDestroy(): void {
+    this.unsubscribeToState$.next();
+    this.unsubscribeToState$.complete();
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
-
   ngAfterViewInit() {
     this.route.paramMap.subscribe(params => {
       const formName = params.get('formname')!;
+      this.store.select(state => state.myState.myValue)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe(myValue => {
+        this.stateData$ = this.store.select(state => state[formName]);
+        //this.stateData$ = this.store.select(state => state[`$state.generic.{formName}`]);
+        // Handle the state value change here.
+      });
+      this.stateData$.pipe(takeUntil(this.unsubscribeToState$)).subscribe(stateVal =>{
+        this.data=stateVal.activeValue;
+      });
+
       this.configsrv.getConfigData().subscribe(data => {
         const frm = data.forms.find(item => item.name === formName);
         if (frm) {

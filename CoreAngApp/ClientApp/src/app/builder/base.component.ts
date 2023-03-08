@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Form, FormBuilder, FormGroup } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { defaultObject, GenForm } from './models';
 
 @Component({
@@ -8,7 +9,7 @@ import { defaultObject, GenForm } from './models';
 })
 export class BaseComponent  {
     public configuration: GenForm=defaultObject.forms[0];
-    public formData: any;
+    public formData?: Observable<any>;
     public form: FormGroup;
     public dataSource: any;
     public formName:string="defaultname";
