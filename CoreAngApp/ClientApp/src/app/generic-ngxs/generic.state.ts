@@ -35,6 +35,12 @@ export interface GenericStateModel<T> {
 export interface StateModel {
   [key: string]: GenericStateModel<any>;
 }
+const DEFAULT_STATE_DATA = {
+  activeValue: null,
+  listData: [],
+  loading: false,
+  error: null,
+};
 
 @State<StateModel>({
   name: 'generic',
@@ -44,12 +50,8 @@ export interface StateModel {
 export class GenericState {
   @Action(LoadData)
   loadData(ctx: StateContext<StateModel>, action: LoadData<any>) {
-    const stateData = ctx.getState()[action.stateName] || {
-      activeValue: null,
-      listData: [],
-      loading: false,
-      error: null,
-    };
+    const stateData = ctx.getState()[action.stateName] || DEFAULT_STATE_DATA;
+    
     ctx.patchState({
       [action.stateName]: {
         ...stateData,
@@ -72,12 +74,7 @@ export class GenericState {
 
   @Action(LoadDataFail)
   loadDataFail(ctx: StateContext<StateModel>, action: LoadDataFail<any>) {
-    const stateData = ctx.getState()[action.stateName] || {
-      activeValue: null,
-      listData: [],
-      loading: false,
-      error: null,
-    };
+    const stateData = ctx.getState()[action.stateName] || DEFAULT_STATE_DATA;
     ctx.patchState({
       [action.stateName]: {
         ...stateData,
@@ -89,12 +86,7 @@ export class GenericState {
 
   @Action(LoadDataSuccess)
   loadDataSuccess(ctx: StateContext<StateModel>, action: LoadDataSuccess<any>) {
-    const stateData = ctx.getState()[action.stateName] || {
-      activeValue: null,
-      listData: [],
-      loading: false,
-      error: null,
-    };
+    const stateData = ctx.getState()[action.stateName] || DEFAULT_STATE_DATA;
     const updatedListData = [...stateData.listData, ...action.payload];
     ctx.patchState({
       [action.stateName]: {
@@ -109,12 +101,7 @@ export class GenericState {
 
   @Action(AddData)
   addData(ctx: StateContext<any>, action: AddData<any>) {
-    const stateData = ctx.getState()[action.stateName] || {
-      activeValue: null,
-      listData: [],
-      loading: false,
-      error: null,
-    };
+    const stateData = ctx.getState()[action.stateName] || DEFAULT_STATE_DATA;
     const updatedListData = [...stateData.listData, action.payload];
     ctx.patchState({
       [action.stateName]: {

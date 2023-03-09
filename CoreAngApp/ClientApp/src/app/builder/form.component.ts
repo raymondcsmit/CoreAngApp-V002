@@ -1,24 +1,15 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from "@angular/core";
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
-} from '@angular/forms';
-import { map, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { BaseComponent } from './base.component';
-import { select, Store } from '@ngrx/store';
-import { GenericState,loadGenericData,
-  createGenericData,
-  updateGenericData,
-  deleteGenericData,
-  selectGenericData,
-  selectGenericLoading,
-  selectGenericError } from '../ngrxstore/generic.store';
+} from "@angular/forms";
+import {  Observable } from "rxjs";
+import { BaseComponent } from "./base.component";
 
 @Component({
-  selector: 'app-form',
+  selector: "app-form",
   template: `
     <form [formGroup]="form" (ngSubmit)="saveAction()">
       <div *ngIf="loading$ | async">Loading...</div>
@@ -48,7 +39,7 @@ import { GenericState,loadGenericData,
             (form.get(field.name)?.dirty || form.get(field.name)?.touched)
           "
         >
-          <div *ngIf="form.get(field.name)?.errors!['required']">
+          <div *ngIf="(form.get(field.name)?.errors)!['required']">
             {{ field.label }} is required.
           </div>
         </div>
@@ -57,34 +48,27 @@ import { GenericState,loadGenericData,
     </form>
   `,
 })
-  export class FormComponent extends BaseComponent implements OnInit {
-    constructor(fb: FormBuilder, private http: HttpClient,private store: Store<GenericState<any>>) {
-      super(fb);
-    }
-    @Input() key: string=this.configuration?.name;  
-    
-    saveAction() {
-      this.actionPerformed.emit();
-    }
-    loading$?: Observable<boolean>;
-    error$?: Observable<any>;   
- 
+export class FormComponent extends BaseComponent implements OnInit {
+  constructor(
+    fb: FormBuilder
+  ) {
+    super(fb);
+  }
+  @Input() key: string = this.configuration?.name;
+  loading$?: Observable<boolean>;
+  error$?: Observable<any>;
+
+  saveAction() {
+    this.actionPerformed.emit();
+  }
   ngOnInit() {
-    this.store.dispatch(loadGenericData({ key: this.key }));
-
-    this.loading$ = this.store.pipe(select(selectGenericLoading(this.key)));
-    this.error$ = this.store.pipe(select(selectGenericError(this.key)));
-
-    this.store.pipe(select(selectGenericData<any>(this.key))).subscribe((data) => {
-      this.form = this.createForm(data[0]);
-    });
+    this.form = this.createForm(this.configuration);
   }
   createForm(data: any) {
-    const controls: { [key: string]: FormControl } = {}; // Using an object instead of an array
-
+    const controls: { [key: string]: FormControl } = {};
     if (this.configuration?.fields) {
       for (const field of this.configuration.fields) {
-        controls[field.name] = new FormControl('', this.getValidators(field));
+        controls[field.name] = new FormControl("", this.getValidators(field));
       }
       const formGroup = new FormGroup(controls);
       if (data) {
@@ -95,18 +79,6 @@ import { GenericState,loadGenericData,
     return this.form;
   }
 
-  // onSubmit() {
-  //   const data = this.form.value;
-  //   if (data.id) {
-  //     this.store.dispatch(updateGenericData({ key: this.key,id: data['id'], payload: data }));
-  //   } else {
-  //     this.store.dispatch(createGenericData({ key: this.key, payload: data }));
-  //   }
-  // }
-
-  onDelete(idx: string) {
-    this.store.dispatch(deleteGenericData({ key: this.key, id: idx, payload: { idx } }));
-  }
   getValidators(field: any) {
     const validators = [];
     if (field.required) {
