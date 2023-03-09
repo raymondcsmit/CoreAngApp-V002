@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -20,7 +20,7 @@ import { GenericState,loadGenericData,
 @Component({
   selector: 'app-form',
   template: `
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="saveAction()">
       <div *ngIf="loading$ | async">Loading...</div>
       <div *ngIf="error$ | async">Error: {{ error$ | async }}</div>
       <h3>{{ configuration.title }}</h3>
@@ -53,6 +53,7 @@ import { GenericState,loadGenericData,
           </div>
         </div>
       </div>
+      <button type="submit">Save</button>
     </form>
   `,
 })
@@ -60,8 +61,11 @@ import { GenericState,loadGenericData,
     constructor(fb: FormBuilder, private http: HttpClient,private store: Store<GenericState<any>>) {
       super(fb);
     }
-    @Input() key: string=this.configuration?.name;   
-  
+    @Input() key: string=this.configuration?.name;  
+    
+    saveAction() {
+      this.actionPerformed.emit();
+    }
     loading$?: Observable<boolean>;
     error$?: Observable<any>;   
  
@@ -91,14 +95,14 @@ import { GenericState,loadGenericData,
     return this.form;
   }
 
-  onSubmit() {
-    const data = this.form.value;
-    if (data.id) {
-      this.store.dispatch(updateGenericData({ key: this.key,id: data['id'], payload: data }));
-    } else {
-      this.store.dispatch(createGenericData({ key: this.key, payload: data }));
-    }
-  }
+  // onSubmit() {
+  //   const data = this.form.value;
+  //   if (data.id) {
+  //     this.store.dispatch(updateGenericData({ key: this.key,id: data['id'], payload: data }));
+  //   } else {
+  //     this.store.dispatch(createGenericData({ key: this.key, payload: data }));
+  //   }
+  // }
 
   onDelete(idx: string) {
     this.store.dispatch(deleteGenericData({ key: this.key, id: idx, payload: { idx } }));

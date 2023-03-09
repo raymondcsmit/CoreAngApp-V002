@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { Form, FormBuilder, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { defaultObject, GenForm } from './models';
@@ -15,6 +15,7 @@ export class BaseComponent  {
     public formName:string="defaultname";
     public unique_key: number=0;
     public parentRef: any;
+    @Output() actionPerformed = new EventEmitter<void>();
     constructor(private fb: FormBuilder) {
       this.form = this.fb.group({});
     }

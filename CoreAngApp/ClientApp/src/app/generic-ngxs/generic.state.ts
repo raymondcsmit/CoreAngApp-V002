@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext } from '@ngxs/store';
+import { Action, createSelector, Selector, State, StateContext } from '@ngxs/store';
 import { tap, catchError, Observable } from 'rxjs';
 
 // #region Actions
@@ -126,6 +126,54 @@ export class GenericState {
       },
     });
   }
-  
+  //#region Selector
+//   @Selector()
+//   static getStateByName(name: string):(ctx: StateContext<StateModel>)=> GenericStateModel<any> {
+//     return (ctx:StateContext<StateModel>)=>{
+//     const stateData = ctx.getState()[name] || {
+//       activeValue: null,
+//       listData: [],
+//       loading: false,
+//       error: null,
+//     };
+//     return stateData;
+//   }
+//   }
+
+//   // Selector to get the list data by name
+//   @Selector()
+// static getListDataByName(name: string): (state: StateModel) => any[] {
+//   return (state: StateModel) => {
+//     const genericState = state[name] || null;
+//     return genericState ? genericState.listData : [];
+//   };
+// }
+  //#endregion Selector
 }
 // #endregion
+
+export class GenericStateSelectors {
+  static getActiveValue<T>(stateName: string) {
+    return createSelector([GenericState], (state: StateModel) => {
+      return state[stateName]?.activeValue;
+    });
+  }
+
+  static getListData<T>(stateName: string) {
+    return createSelector([GenericState], (state: StateModel) => {
+      return state[stateName]?.listData;
+    });
+  }
+
+  static getLoading<T>(stateName: string) {
+    return createSelector([GenericState], (state: StateModel) => {
+      return state[stateName]?.loading;
+    });
+  }
+
+  static getError<T>(stateName: string) {
+    return createSelector([GenericState], (state: StateModel) => {
+      return state[stateName]?.error;
+    });
+  }
+}

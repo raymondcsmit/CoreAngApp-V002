@@ -11,6 +11,8 @@ import { LoginState } from './ngrxstore/auth.store';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { GenericNgxsModule } from './generic-ngxs/generic-ngxs.module';
+import { GenericState } from './generic-ngxs';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 @NgModule({
   declarations: [
     AppComponent
@@ -20,8 +22,9 @@ import { GenericNgxsModule } from './generic-ngxs/generic-ngxs.module';
     BrowserAnimationsModule,
     ReactiveFormsModule,HttpClientModule,
     CommonModule,
-    StoreModule.forRoot({ generic: genericReducer }),
-    NgxsModule.forRoot([LoginState]),
+    StoreModule.forRoot({ generic: genericReducer }),//NgxsModule.forRoot([GenericState]),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsModule.forRoot([LoginState,GenericState]),
     AppRoutingModule, // Main routes for application
     CoreModule,       // Singleton objects (services, components and resources that are loaded only at app.module level)
     GenericNgxsModule.forRoot()
