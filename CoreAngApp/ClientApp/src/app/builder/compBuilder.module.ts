@@ -8,14 +8,18 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from '../core/core.module';
 import { SharedModule } from '../shared/shared.module';
 import { ListComponent } from './list.component';
+import { ListAgGridComponent } from './list-ag-grid.component';
+import { AgGridModule } from 'ag-grid-angular';
+import { ListAgGridComponentDummy } from './list-ag-grid.component copy';
 const routes: Routes = [
-  { path: '', component: ViewRenderComponent }
+  { path: '', component: ViewRenderComponent },
+  //{path:'aggrid',component:ListAgGridComponentDummy}
 ];
 @NgModule({
   imports: [
-    CommonModule,CoreModule,SharedModule,ReactiveFormsModule, RouterModule.forChild(routes)
+    CommonModule,CoreModule,SharedModule,AgGridModule, ReactiveFormsModule, RouterModule.forChild(routes)
   ],
-  declarations: [FormComponent,WRRenderComponent,ViewRenderComponent,ListComponent],
+  declarations: [FormComponent,WRRenderComponent,ViewRenderComponent,ListComponent, ListAgGridComponent,ListAgGridComponentDummy],
   exports: [
     WRRenderComponent,ViewRenderComponent
   ]

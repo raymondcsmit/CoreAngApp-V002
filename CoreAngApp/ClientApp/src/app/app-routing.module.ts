@@ -21,11 +21,7 @@ const appRoutes: Routes = [
     loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule),
     canActivate: [AuthGuard]
   },
-  {
-    path: 'configure',
-    loadChildren: () => import('./configure-app/configure-app.module').then(m => m.ConfigureAppModule),
-    canActivate: [AuthGuard]
-  },
+  
   {
     path: 'not-found',
     component: NotFoundComponent,

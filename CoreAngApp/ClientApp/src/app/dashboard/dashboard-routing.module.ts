@@ -17,6 +17,11 @@ export const DashboardRoutes: Routes = [
                 path: 'home',
                 component: HomeComponent
             },
+            {
+                path: 'configure',
+                loadChildren: () => import('../configure-app/configure-app.module').then(m => m.ConfigureAppModule),
+                
+              },
             { path: 'loadform/:formname',
             loadChildren: () => import('../builder/compBuilder.module').then(m => m.CompBuilderModule)},
             {

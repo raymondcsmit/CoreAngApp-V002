@@ -9,6 +9,7 @@ import { BaseComponent } from './base.component';
 import { ConfigService } from './configure.service';
 import { Select, Store } from '@ngxs/store';
 import { AddData, GenericStateModel, GenericStateSelectors, LoadData } from '../generic-ngxs';
+import { ListAgGridComponent } from './list-ag-grid.component';
 @Component({
   selector: 'wrdynamic-component',
   template: `<ng-template #genComponent></ng-template>`
@@ -24,6 +25,7 @@ export class ViewRenderComponent implements OnInit, AfterViewInit,OnDestroy {
   loading$?: Observable<boolean>;
   error$?: Observable<any>;
   listData$?: Observable<any[]>;
+  listData?:any[];
   constructor(private store: Store,private cdRef: ChangeDetectorRef,private ngZone: NgZone, private route: ActivatedRoute, private configsrv:ConfigService) { }
 
   ngOnInit() {}
@@ -44,11 +46,11 @@ export class ViewRenderComponent implements OnInit, AfterViewInit,OnDestroy {
     this.route.paramMap.subscribe(params => {
        
       const formName = params.get('formname')!;
-      //this.store.dispatch(new LoadData<any[]>(this.loadData(), formName)); 
+      
       this.bindDataToStore(formName);
       this.generateForm(formName);    
 
-      
+      this.store.dispatch(new LoadData<any[]>(this.loadData(), formName)); 
       this.ngZone.runOutsideAngular(() => {
         this.cdRef.detectChanges();
       });
@@ -65,10 +67,13 @@ export class ViewRenderComponent implements OnInit, AfterViewInit,OnDestroy {
           formComponent.instance.formData = this.data;
         } else {
           // If component doesn't exist, create a new one and add it to the formComponents dictionary
-          formComponent = this.genComponent.createComponent(FormComponent);
+          //formComponent = this.genComponent.createComponent(FormComponent);
+          formComponent = this.genComponent.createComponent(ListAgGridComponent);
+          //ListAgGridComponent
           formComponent.instance.configuration = frm;
           formComponent.instance.formName = frm.name;
-          formComponent.instance.formData = this.data;
+          //formComponent.instance.formData = this.data;
+          formComponent.instance.listData = this.listData$;
           this.formComponents[formName] = formComponent;
           // Listen to child component action
           formComponent.instance.actionPerformed.subscribe(() => {
@@ -101,7 +106,8 @@ export class ViewRenderComponent implements OnInit, AfterViewInit,OnDestroy {
       this.error$ = this.store.select(GenericStateSelectors.getError(formName));
       this.listData$ = this.store.select(GenericStateSelectors.getListData(formName));  
 
-      this.myStateSubscription = this.listData$.subscribe((d: any) => {
+      this.myStateSubscription = this.listData$.subscribe((d: any[]) => {
+        this.listData=d;
         console.log('this is myStateSubscription',d);
       });
   }

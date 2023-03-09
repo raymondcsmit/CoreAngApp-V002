@@ -39,7 +39,8 @@ export class ConfigService {
           const form: GenForm = {
             title: formData.title,
             name: formData.name,
-            fields: fields
+            fields: fields,
+            displayedColumns: formData.displayedColumns
           };
 
           forms.push(form);
@@ -85,7 +86,7 @@ export class ConfigService {
             title: formData.title,
             name: formData.name,
             fields: fields,
-            displayedColumns: []
+            displayedColumns: formData.displayedColumns
           };
 
           forms.push(form);
