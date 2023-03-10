@@ -11,12 +11,21 @@ import { ListComponent } from './list.component';
 import { ListAgGridComponent } from './list-ag-grid.component';
 import { AgGridModule } from 'ag-grid-angular';
 import { ListAgGridComponentDummy } from './list-ag-grid.component copy';
+import { CsvExportModule, ModuleRegistry } from 'ag-grid-community';
 const routes: Routes = [
   { path: '', component: ViewRenderComponent },
   //{path:'aggrid',component:ListAgGridComponentDummy}
 ];
+// Register the required feature modules with the Grid
+ModuleRegistry.registerModules([
+  //ClientSideRowModelModule,
+  CsvExportModule,
+  //ExcelExportModule,
+  //MenuModule,
+]);
 @NgModule({
   imports: [
+    
     CommonModule,CoreModule,SharedModule,AgGridModule, ReactiveFormsModule, RouterModule.forChild(routes)
   ],
   declarations: [FormComponent,WRRenderComponent,ViewRenderComponent,ListComponent, ListAgGridComponent,ListAgGridComponentDummy],

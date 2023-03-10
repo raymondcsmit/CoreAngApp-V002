@@ -5,20 +5,31 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { ColDef, GridOptions } from "ag-grid-community";
+import { ColDef, CsvExportParams, ExcelExportParams, GridApi, GridOptions, GridReadyEvent } from "ag-grid-community";
 import { delay, Observable, of } from "rxjs";
 import { BaseComponent } from "./base.component";
 
 @Component({
   selector: "app-ag-grid",
   template: `
-    <h3>{{ formName }}</h3>
-    <div class="parent-element">
+    <div class="container">
+    <div>
+      <button
+        (click)="onBtExport()"
+        style="margin-bottom: 5px; font-weight: bold;"
+      >
+        Export to Excel
+      </button>
+    </div>
+    
     <ag-grid-angular
       style="width: 100%; height: 200px;"
       class="ag-theme-alpine"
+      [defaultColDef]="defaultColDef"
+      [gridOptions]="gridOptions"
       [columnDefs]="columnDefs"
       [rowData]="listData$ | async"
+      (gridReady)="onGridReady($event)"
     ></ag-grid-angular>
 </div>
   `,
@@ -34,11 +45,37 @@ export class ListAgGridComponent extends BaseComponent implements OnInit {
     super(fb);
   }
   @Input() key: string = this.configuration?.name;
-
+  gridOptions: any;
   columnDefs: any[] = [];
-
+  private gridApi!: GridApi<any>;
+  
+  // gridOptions: GridOptions = {
+  //   enableExcelExport: true,
+  // };
+  public defaultColDef: ColDef = {
+    sortable: true,
+    filter: true,
+    resizable: true,
+    minWidth: 100,
+    flex: 1,
+  };
   saveAction() {
     this.actionPerformed.emit();
+  }
+
+  onBtExport() {
+    const params: CsvExportParams={
+    fileName: `${this.formName}exportedfile`
+    }
+    this.gridApi.exportDataAsCsv(params);
+    // const params: ExcelExportParams = {
+    //   fileName: 'exported_data.xlsx',
+    // };
+    // this.gridApi.exportDataAsExcel(params);
+  }
+  
+  onGridReady(params: GridReadyEvent<any>) {
+    this.gridApi = params.api;
   }
   ngOnInit() {
     if (
@@ -64,6 +101,9 @@ export class ListAgGridComponent extends BaseComponent implements OnInit {
     } else {
       this.columnDefs = [];
     }
+    this.gridOptions = {
+      enableExcelExport: true,
+    };
   }
 
   getValidators(field: any) {
