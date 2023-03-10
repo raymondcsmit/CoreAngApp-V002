@@ -73,7 +73,7 @@ export class ViewRenderComponent implements OnInit, AfterViewInit,OnDestroy {
           formComponent.instance.configuration = frm;
           formComponent.instance.formName = frm.name;
           //formComponent.instance.formData = this.data;
-          formComponent.instance.listData = this.listData$;
+          formComponent.instance.listData$ = this.listData$;
           this.formComponents[formName] = formComponent;
           // Listen to child component action
           formComponent.instance.actionPerformed.subscribe(() => {

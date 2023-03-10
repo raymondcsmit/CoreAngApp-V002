@@ -17,7 +17,7 @@ import { BaseComponent } from "./base.component";
   style="width: 100%; height: 200px;"
   class="ag-theme-alpine"
   [columnDefs]="columnDefs"
-  [rowData]="rowData$ | async"
+  [rowData]="listData$ | async"
 ></ag-grid-angular>
   `,
 })
@@ -35,7 +35,7 @@ export class ListAgGridComponent extends BaseComponent implements OnInit {
     {field1: 'ewe2', field2: '2ewew', field3: '2'},
     {field1: 'ewe3', field2: '3ewew', field3: '2'}
   ];
-columnDefs: ColDef[] = [
+columnDefs: any[] = [
   { headerName: 'Field 1', field: 'field1', minWidth: 100 },
   { headerName: 'Field 2', field: 'field2', minWidth: 100 },
   { headerName: 'Field 3', field: 'field3', minWidth: 100 },
@@ -86,7 +86,47 @@ columnDefs: ColDef[] = [
     this.actionPerformed.emit();
   }
   ngOnInit() {
+    if (this.configuration && this.configuration.displayedColumns && this.configuration.fields) {
+      this.columnDefs = this.configuration.displayedColumns.map((column) => {
+        const field = this.configuration.fields?.find((fd) => fd.name === column);
+        if (field) {
+          return {
+            headerName: field.label,
+            field: field.name,
+          };
+        } else {
+          return null;
+        }
+      }).filter((def) => def !== null);
+    } else {
+      this.columnDefs = [];
+    }
     
+    // this.columnDefs = this.configuration?.displayedColumns?.map((column) => {
+    //   const field = this.configuration?.fields?.find((fd) => fd.name === column);
+    //   let columnDef = {
+    //     headerName: field.label,
+    //     field: field.name,
+    //   };
+    //   // if (field.type === 'select') {
+    //   //   columnDef = {
+    //   //     ...columnDef,
+    //   //     cellRenderer: 'agSelectCellRenderer',
+    //   //     cellEditor: 'agSelectCellEditor',
+    //   //     cellEditorParams: {
+    //   //       values: field.options.reduce((acc, option) => {
+    //   //         acc[option.value] = option.label;
+    //   //         return acc;
+    //   //       }, {}),
+    //   //     },
+    //   //   };
+    //   // }
+
+    //   return columnDef;
+    // });
+
+
+
     this.listData1=this.loadData();
     this.listData1.subscribe((data:any[])=>{
     console.log('Column Definition',this.columnDefs);
