@@ -12,10 +12,12 @@ import { BaseComponent } from "./base.component";
 @Component({
   selector: "app-ag-grid",
   template: `
-    <ag-grid-angular #agGrid style="width: 100%; height: 200px;" class="ag-theme-alpine"
-  [gridOptions]="gridOptions"
-  [rowData]="listData1 | async"
-  (cellValueChanged)="saveAction()"
+  <h3>{{formName}}</h3>
+  <ag-grid-angular
+  style="width: 100%; height: 200px;"
+  class="ag-theme-alpine"
+  [columnDefs]="columnDefs"
+  [rowData]="rowData$ | async"
 ></ag-grid-angular>
   `,
 })
@@ -27,28 +29,18 @@ export class ListAgGridComponent extends BaseComponent implements OnInit {
     super(fb);
   }
   @Input() key: string = this.configuration?.name;
- 
-//   columnDefs : ColDef[]= [
-//     { field: 'field1' },
-//     { field: 'field2' },
-//     { field: 'field3' }
-// ];
-  
-columnDefs : ColDef[]=[
-    { headerName: 'Form Title', field: 'title', minWidth: 100 },
-    { headerName: 'Form Name', field: 'name', minWidth: 100 },
-    { headerName: 'Field 1', field: 'field1', minWidth: 100 },
-    { headerName: 'Field 2', field: 'field2', minWidth: 100 },
-    { headerName: 'Field 3', field: 'field3', minWidth: 100 }
+  rowData$: Observable<any[]> = this.loadData();
+   rowData:any[]= [
+    {field1: 'ewe1', field2: '1ewew', field3: '2'},
+    {field1: 'ewe2', field2: '2ewew', field3: '2'},
+    {field1: 'ewe3', field2: '3ewew', field3: '2'}
   ];
-  // public gridOptions: GridOptions = {
-  //   //treeData: true,
-  //   //groupDefaultExpanded: -1,
-    
-  //   pagination: true,
-  //   rowSelection: 'single',
-  //   animateRows: true,
-  // };
+columnDefs: ColDef[] = [
+  { headerName: 'Field 1', field: 'field1', minWidth: 100 },
+  { headerName: 'Field 2', field: 'field2', minWidth: 100 },
+  { headerName: 'Field 3', field: 'field3', minWidth: 100 },
+];
+  
   public gridOptions: GridOptions = {
   pagination: true,
   rowHeight: 50,
@@ -83,9 +75,9 @@ columnDefs : ColDef[]=[
   
   loadData(): Observable<any[]> {
     const students: any[] = [
-      {field1: 'ewe1', field2: '1ewew', field3: ''},
-      {field1: 'ewe2', field2: '2ewew', field3: ''},
-      {field1: 'ewe3', field2: '3ewew', field3: ''}
+      {field1: 'ewe1', field2: '1ewew', field3: '2'},
+      {field1: 'ewe2', field2: '2ewew', field3: '2'},
+      {field1: 'ewe3', field2: '3ewew', field3: '2'}
     ];
     return of(students).pipe(delay(500));
   }
@@ -101,10 +93,6 @@ columnDefs : ColDef[]=[
     this.vrtdata = data;
         this.gridOptions.rowData=data; 
         this.gridOptions.columnDefs =this.columnDefs
-       // this.gridOptions.api?.sizeColumnsToFit();
-       
-     //   this.gridOptions.api?.getEditingCells();
-      //this.gridOptions.api?.setRowData(data);
       console.log('row data is : ',data);
     })
   }
