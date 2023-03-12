@@ -66,9 +66,16 @@ export class ViewRenderComponent implements OnInit, AfterViewInit,OnDestroy {
           formComponent.instance.configuration = frm;
           formComponent.instance.formData = this.data;
         } else {
+          
           // If component doesn't exist, create a new one and add it to the formComponents dictionary
           //formComponent = this.genComponent.createComponent(FormComponent);
-          formComponent = this.genComponent.createComponent(ListAgGridComponent);
+          switch(frm.type)
+          {
+            case 'Form': formComponent = this.genComponent.createComponent(FormComponent); break;
+            case 'List': formComponent = this.genComponent.createComponent(ListAgGridComponent); break;
+            default: break;
+          }
+          //formComponent = this.genComponent.createComponent(ListAgGridComponent);
           //ListAgGridComponent
           formComponent.instance.configuration = frm;
           formComponent.instance.formName = frm.name;

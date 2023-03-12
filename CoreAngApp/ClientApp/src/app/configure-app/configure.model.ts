@@ -4,6 +4,7 @@ export interface cfFormField {
     label: string;
     options?: cfOption[];
     required: boolean;
+    value: any; // add a value property
   }
   
   export interface cfForm {

@@ -4,6 +4,7 @@
     {
       "title": "First Form",
       "name": "formOne",
+      "type":"Form",
       "displayedColumns": [ "field1", "field2", "field3" ],
       "fields": [
         {
@@ -43,6 +44,7 @@
     {
       "title": "Second Form",
       "name": "formTwo",
+      "type":"List",
       "displayedColumns": [ "field1", "field2" ],
       "fields": [
         {

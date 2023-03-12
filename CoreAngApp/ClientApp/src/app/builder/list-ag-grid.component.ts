@@ -5,7 +5,15 @@ import {
   FormGroup,
   Validators,
 } from "@angular/forms";
-import { ColDef, ColumnApi, CsvExportParams, ExcelExportParams, GridApi, GridOptions, GridReadyEvent } from "ag-grid-community";
+import {
+  ColDef,
+  ColumnApi,
+  CsvExportParams,
+  ExcelExportParams,
+  GridApi,
+  GridOptions,
+  GridReadyEvent,
+} from "ag-grid-community";
 import { delay, Observable, of } from "rxjs";
 import { BaseComponent } from "./base.component";
 import printDoc from "./pdfBuilder/printDoc.js";
@@ -16,38 +24,47 @@ import printDoc from "./pdfBuilder/printDoc.js";
   selector: "app-ag-grid",
   template: `
     <div class="container">
-    <div>
-      <button
-        (click)="onBtExport()"
-        style="margin-bottom: 5px; font-weight: bold;"
-      >
-        Export to Excel
-      </button>
-      <button (click)="exportAsPdf($event)" 
-          matTooltip="Export to PDF"
-          mat-raised-button>
-          Export as PDF
-            <mat-icon>get_app</mat-icon>
+      <div>
+        <button
+          (click)="onBtExport()"
+          style="margin-bottom: 5px; font-weight: bold;"
+        >
+          Export to Excel
         </button>
+        <button
+          (click)="exportAsPdf($event)"
+          matTooltip="Export to PDF"
+          mat-raised-button
+        >
+          Export as PDF
+          <mat-icon>get_app</mat-icon>
+        </button>
+      </div>
+
+      <ag-grid-angular
+        style="width: 100%; height: 200px;"
+        class="ag-theme-alpine"
+        [defaultColDef]="defaultColDef"
+        [gridOptions]="gridOptions"
+        [columnDefs]="columnDefs"
+        [rowData]="listData$ | async"
+        (gridReady)="onGridReady($event)"
+        (cellValueChanged)="onCellValueChanged($event)"
+        (rowDoubleClicked)="onRowDoubleClicked($event)"
+        (rowSelected)="onRowSelected($event)"
+        (rowDeselected)="onRowDeselected($event)"
+        (gridSizeChanged)="onGridSizeChanged($event)"
+      ></ag-grid-angular>
     </div>
-    
-    <ag-grid-angular
-      style="width: 100%; height: 200px;"
-      class="ag-theme-alpine"
-      [defaultColDef]="defaultColDef"
-      [gridOptions]="gridOptions"
-      [columnDefs]="columnDefs"
-      [rowData]="listData$ | async"
-      (gridReady)="onGridReady($event)"
-    ></ag-grid-angular>
-</div>
   `,
-styles: [`
-.parent-element {
-  height: calc(100vh - 150px);
-  padding: 10px;
-}
-`]
+  styles: [
+    `
+      .parent-element {
+        height: calc(100vh - 150px);
+        padding: 10px;
+      }
+    `,
+  ],
 })
 export class ListAgGridComponent extends BaseComponent implements OnInit {
   constructor(fb: FormBuilder) {
@@ -74,26 +91,26 @@ export class ListAgGridComponent extends BaseComponent implements OnInit {
   PDF_WITH_CELL_FORMATTING = true;
   PDF_WITH_COLUMNS_AS_LINKS = true;
   PDF_SELECTED_ROWS_ONLY = false;
-  exportAsPdf(event:any): void {
+  exportAsPdf(event: any): void {
     event.preventDefault();
-      const printParams = {
-        PDF_HEADER_COLOR: this.PDF_HEADER_COLOR,
-        PDF_INNER_BORDER_COLOR: this.PDF_INNER_BORDER_COLOR,
-        PDF_OUTER_BORDER_COLOR: this.PDF_OUTER_BORDER_COLOR,
-        PDF_LOGO: this.PDF_LOGO,
-        PDF_PAGE_ORITENTATION: this.PDF_PAGE_ORITENTATION,
-        PDF_WITH_HEADER_IMAGE: this.PDF_WITH_HEADER_IMAGE,
-        PDF_WITH_FOOTER_PAGE_COUNT: this.PDF_WITH_FOOTER_PAGE_COUNT,
-        PDF_HEADER_HEIGHT: this.PDF_HEADER_HEIGHT,
-        PDF_ROW_HEIGHT: this.PDF_ROW_HEIGHT,
-        PDF_ODD_BKG_COLOR: this.PDF_ODD_BKG_COLOR,
-        PDF_EVEN_BKG_COLOR: this.PDF_EVEN_BKG_COLOR,
-        PDF_WITH_CELL_FORMATTING: this.PDF_WITH_CELL_FORMATTING,
-        PDF_WITH_COLUMNS_AS_LINKS: this.PDF_WITH_COLUMNS_AS_LINKS,
-        PDF_SELECTED_ROWS_ONLY: this.PDF_SELECTED_ROWS_ONLY
-      };
-      printDoc(printParams, this.gridApi, this.gridColumnApi);
-    }
+    const printParams = {
+      PDF_HEADER_COLOR: this.PDF_HEADER_COLOR,
+      PDF_INNER_BORDER_COLOR: this.PDF_INNER_BORDER_COLOR,
+      PDF_OUTER_BORDER_COLOR: this.PDF_OUTER_BORDER_COLOR,
+      PDF_LOGO: this.PDF_LOGO,
+      PDF_PAGE_ORITENTATION: this.PDF_PAGE_ORITENTATION,
+      PDF_WITH_HEADER_IMAGE: this.PDF_WITH_HEADER_IMAGE,
+      PDF_WITH_FOOTER_PAGE_COUNT: this.PDF_WITH_FOOTER_PAGE_COUNT,
+      PDF_HEADER_HEIGHT: this.PDF_HEADER_HEIGHT,
+      PDF_ROW_HEIGHT: this.PDF_ROW_HEIGHT,
+      PDF_ODD_BKG_COLOR: this.PDF_ODD_BKG_COLOR,
+      PDF_EVEN_BKG_COLOR: this.PDF_EVEN_BKG_COLOR,
+      PDF_WITH_CELL_FORMATTING: this.PDF_WITH_CELL_FORMATTING,
+      PDF_WITH_COLUMNS_AS_LINKS: this.PDF_WITH_COLUMNS_AS_LINKS,
+      PDF_SELECTED_ROWS_ONLY: this.PDF_SELECTED_ROWS_ONLY,
+    };
+    printDoc(printParams, this.gridApi, this.gridColumnApi);
+  }
   //#endregion Pdf settings
   // gridOptions: GridOptions = {
   //   enableExcelExport: true,
@@ -110,15 +127,58 @@ export class ListAgGridComponent extends BaseComponent implements OnInit {
   }
 
   onBtExport() {
-    const params: CsvExportParams={
-    fileName: `${this.formName}exportedfile`
-    }
+    const params: CsvExportParams = {
+      fileName: `${this.formName}exportedfile`,
+    };
     this.gridApi.exportDataAsCsv(params);
   }
-  
+
   onGridReady(params: GridReadyEvent<any>) {
     this.gridColumnApi = params.columnApi;
     this.gridApi = params.api;
+  }
+  onAddRow() {
+    const newItem = {
+      id: 0, // generate a unique ID here
+      // add the rest of the properties for the new item
+    };
+    this.gridApi.applyTransaction({
+      add: [newItem],
+    });
+  }
+  onCellValueChanged(event:any): void {
+    console.log('onCellValueChanged', event);
+  }
+  
+  onRowDoubleClicked(event:any): void {
+    console.log('onRowDoubleClicked', event);
+  }
+  
+  onRowSelected(event:any): void {
+    console.log('onRowSelected', event);
+  }
+  
+  onRowDeselected(event:any): void {
+    console.log('onRowDeselected', event);
+  }
+  
+  onGridSizeChanged(event:any): void {
+    console.log('onGridSizeChanged', event);
+  }
+  onDeleteRow() {
+    const selectedRows = this.gridApi.getSelectedRows();
+    if (selectedRows.length === 0) {
+      return;
+    }
+    this.gridApi.applyTransaction({
+      remove: selectedRows,
+    });
+  }
+
+  onCellEditingStopped(event: any) {
+    const rowNode = event.node;
+    const data = rowNode.data;
+    // save the updated data to the backend
   }
   ngOnInit() {
     if (
@@ -146,6 +206,7 @@ export class ListAgGridComponent extends BaseComponent implements OnInit {
     }
     this.gridOptions = {
       enableExcelExport: true,
+      onCellEditingStopped: this.onCellEditingStopped.bind(this), // bind the method to the component instance
     };
   }
 

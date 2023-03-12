@@ -64,6 +64,15 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatToolbarModule,
     MatTooltipModule,
     MatNativeDateModule,
+    MatDialogModule,
+    MatCheckboxModule,
+    MatSliderModule,
+    MatDatepickerModule,
+    MatSlideToggleModule,
+    MatNativeDateModule,
+    MatRadioModule,
+    MatInputModule,
+    MatTableModule,
   ]
 })
 export class MaterialModule {}

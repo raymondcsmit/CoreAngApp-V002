@@ -1,12 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ConfigureAppComponent } from './configure-app.component';
+import { ConfigureFormComponent } from './configure-form.component';
 
 export const ConfigureAppRoutes: Routes = [
     {
         path: '',
-        component: ConfigureAppComponent
-    }
+        component: ConfigureAppComponent,
+        
+    },{path:'configureform',component:ConfigureFormComponent}
 ];
 
 @NgModule({
@@ -15,5 +17,5 @@ export const ConfigureAppRoutes: Routes = [
 })
 
 export class ConfigureAppRoutingModule {
-  static components = [ConfigureAppComponent];
+  static components = [ConfigureAppComponent,ConfigureFormComponent];
 }

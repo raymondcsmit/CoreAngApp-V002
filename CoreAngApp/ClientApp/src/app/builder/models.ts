@@ -16,6 +16,7 @@ export interface FieldOption {
   export interface GenForm {
     title: string;
     name:string;
+    type:string;
     fields?: Field[];
     displayedColumns?:string[];
   }
@@ -31,6 +32,7 @@ export interface FieldOption {
     forms: [
       {
         title: 'My Form',
+        type:'Form',
         name:'myform',
         displayedColumns:["field1", "field2", "field3"],
         fields: [
