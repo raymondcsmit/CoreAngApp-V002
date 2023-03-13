@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ConfigureApp.Infrastructure;
+using ConfigureApp.Application.Queries.Handler;
 
 namespace ConfigureApp
 {
@@ -21,7 +22,7 @@ namespace ConfigureApp
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ConfigureAppDbContext>(options => OptionsBuilder.SelectDatabase<ConfigureAppDbContext>());
-            //services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AuditLogEventHandler).Assembly));
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetApplicationQueryHandler).Assembly));
             services.AddControllers();
         }
 
