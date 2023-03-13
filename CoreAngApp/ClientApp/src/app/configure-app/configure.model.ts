@@ -10,6 +10,7 @@ export interface cfFormField {
   export interface cfForm {
     title: string;
     name: string;
+    type:string;
     displayedColumns: string[];
     fields: cfFormField[];
   }

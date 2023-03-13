@@ -28,6 +28,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatTreeModule } from '@angular/material/tree';
 
 /**
  * NgModule that includes all Material modules that are required to serve the demo-app.
@@ -73,6 +74,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
     MatRadioModule,
     MatInputModule,
     MatTableModule,
+    MatTreeModule,
   ]
 })
 export class MaterialModule {}

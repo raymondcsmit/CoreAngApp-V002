@@ -87,6 +87,7 @@ export class ConfigService {
           const form: cfForm = {
             title: formData.title,
             name: formData.name,
+            type:formData.type,
             fields: fields,
             displayedColumns: formData.displayedColumns
           };
