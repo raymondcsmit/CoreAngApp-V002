@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreAngApp.Migrations.DataSync
 {
     [DbContext(typeof(DataSyncContext))]
-    [Migration("20230307055624_DatasyncOpt")]
+    [Migration("20230506191011_DatasyncOpt")]
     partial class DatasyncOpt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("Core.Models.SyncTable", b =>
                 {

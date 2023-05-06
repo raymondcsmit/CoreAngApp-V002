@@ -62,6 +62,13 @@ namespace SecurityApp
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                var userManager = scope.ServiceProvider.GetRequiredService<UserManager<ApplicationUser>>();
+                var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<ApplicationRole>>();
+                DbInitializer.SeedData(context, userManager, roleManager).Wait();
+            }
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -24,10 +24,16 @@ namespace ConfigureApp
             services.AddDbContext<ConfigureAppDbContext>(options => OptionsBuilder.SelectDatabase<ConfigureAppDbContext>());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetApplicationQueryHandler).Assembly));
             services.AddControllers();
+
         }
 
         public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var scope = app.ApplicationServices.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ConfigureAppDbContext>();
+                DbInitializer.Initialize(context);
+            }
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

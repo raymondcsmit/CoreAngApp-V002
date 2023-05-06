@@ -33,7 +33,9 @@ namespace ConfigureApp.Infrastructure
                 else
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Ignore(e => e.ApplicationId);
-                entity.HasMany(e => e.Forms).WithOne(e => e.Application).HasForeignKey(e => e.Id);
+                //entity.HasMany(e => e.Forms).WithOne(e => e.Application).HasForeignKey(e => e.Id);
+                entity.HasMany(e => e.Forms).WithOne(e => e.Application).HasForeignKey(e => e.ApplicationId);
+
             });
 
             modelBuilder.Entity<Form>(entity =>
@@ -44,8 +46,12 @@ namespace ConfigureApp.Infrastructure
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Ignore(e => e.FormId);
-                entity.HasMany(e => e.Fields).WithOne(e => e.Form).HasForeignKey(e => e.Id);
-                entity.HasMany(e => e.DisplayedColumns).WithOne(e => e.Form).HasForeignKey(e => e.Id);
+                //entity.HasMany(e => e.Fields).WithOne(e => e.Form).HasForeignKey(e => e.Id);
+                //entity.HasMany(e => e.DisplayedColumns).WithOne(e => e.Form).HasForeignKey(e => e.Id);
+                entity.HasMany(e => e.Fields).WithOne(e => e.Form).HasForeignKey(e => e.FormId);
+                entity.HasMany(e => e.DisplayedColumns).WithOne(e => e.Form).HasForeignKey(e => e.FormId);
+
+
             });
 
             modelBuilder.Entity<Field>(entity =>
@@ -56,7 +62,9 @@ namespace ConfigureApp.Infrastructure
                     entity.Property(e => e.Id).ValueGeneratedOnAdd();
 
                 entity.Ignore(e => e.FieldId);
-                entity.HasMany(e => e.Options).WithOne(e => e.Field).HasForeignKey(e => e.Id);
+                //entity.HasMany(e => e.Options).WithOne(e => e.Field).HasForeignKey(e => e.Id);
+                entity.HasMany(e => e.Options).WithOne(e => e.Field).HasForeignKey(e => e.FieldId);
+
             });
 
             modelBuilder.Entity<Option>(entity =>

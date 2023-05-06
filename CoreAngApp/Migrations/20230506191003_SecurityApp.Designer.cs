@@ -11,14 +11,14 @@ using SecurityApp.Infrastructure;
 namespace CoreAngApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230307055613_SecurityApp")]
+    [Migration("20230506191003_SecurityApp")]
     partial class SecurityApp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("Core.Models.RefreshToken", b =>
                 {

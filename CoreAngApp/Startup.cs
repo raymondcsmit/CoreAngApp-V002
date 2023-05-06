@@ -58,9 +58,15 @@ namespace CoreAngApp
             });
             var optionsBuilder = new CoreDbContextOptionsBuilder(Configuration);
             services.AddSingleton<CoreDbContextOptionsBuilder>(optionsBuilder);
+
             string rootPath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Modules");
             _plugins = new PluginManager().LoadPlugins(rootPath);
-            services.AddPlugins(_plugins);
+            var pluginStartups = services.AddPlugins(_plugins);
+            services.AddSingleton<IEnumerable<IPluginStartup>>(pluginStartups);
+
+            //string rootPath = Path.Combine(System.AppDomain.CurrentDomain.BaseDirectory, "Modules");
+            //_plugins = new PluginManager().LoadPlugins(rootPath);
+            //services.AddPlugins(_plugins);
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Startup).Assembly));
 
             services.AddControllersWithViews();
@@ -68,14 +74,6 @@ namespace CoreAngApp
             {
                 configuration.RootPath = "ClientApp/dist";
             });
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist/ngx-admin";
-            //});
-            //services.AddSpaStaticFiles(configuration =>
-            //{
-            //    configuration.RootPath = "ClientApp/dist";
-            //});
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "HostApp", Version = "v1" });
@@ -97,20 +95,6 @@ namespace CoreAngApp
             }
 
             app.UseHttpsRedirection();
-            //app.UseStaticFiles(new StaticFileOptions()
-            //{
-            //    OnPrepareResponse = (context) =>
-            //    {
-            //        // Retrieve Cache configuration from appsettings.json
-            //        context.Context.Response.Headers["Cache-Control"] = Configuration["StaticFiles:Headers:Cache-Control"];
-            //    }
-
-            //});
-            //app.UseStaticFiles();
-            //if (!env.IsDevelopment())
-            //{
-            //    app.UseSpaStaticFiles();
-            //}
             app.UseStaticFiles(new StaticFileOptions()
             {
                 OnPrepareResponse = (context) =>
@@ -125,26 +109,17 @@ namespace CoreAngApp
                 app.UseSpaStaticFiles();
             }
             app.UseRouting();
-            //app.Map("/api", apiApp =>
-            //{
-            //    apiApp.UseRouting();
-            //    apiApp.UseEndpoints(endpoints =>
-            //    {
-            //        endpoints.MapControllers();
-            //    });
-            //    // Add your API middleware and endpoints here
-            //});
-
-            // Set up module routes
+            var pluginStartups = app.ApplicationServices.GetRequiredService<IEnumerable<IPluginStartup>>();
+            foreach (var pluginStartup in pluginStartups)
+            {
+                pluginStartup.Configure(app, env);
+            }
             var modules = app.ApplicationServices.GetServices<IPluginStartup>();
             foreach (var module in modules)
             {
                 app.Map($"/{module.RoutePrefix}", moduleApp =>
                 {
                     moduleApp.UseRouting();
-
-                    // Add module-specific services
-                    //moduleApp.ConfigureServices(services);
 
                     moduleApp.UseEndpoints(endpoints =>
                     {
@@ -168,8 +143,6 @@ namespace CoreAngApp
                     name: "api",
                     pattern: "api/{controller}/{action}/{id?}");
             });
-
-            // Map requests to the Angular app to a different path
             app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"), builder =>
             {
                 builder.UseStaticFiles();
@@ -183,25 +156,6 @@ namespace CoreAngApp
                     }
                 });
             });
-            //app.UseEndpoints(endpoints =>
-            //{
-            //    endpoints.MapControllerRoute(
-            //        name: "default",
-            //        pattern: "{controller=Home}/{action=Index}/{id?}");
-            //});
-
-            //app.Map("/app", spaApp =>
-            //{
-            //    spaApp.UseSpa(spa =>
-            //    {
-            //        spa.Options.SourcePath = "ClientApp";
-
-            //        if (env.IsDevelopment())
-            //        {
-            //            spa.UseAngularCliServer(npmScript: "start");
-            //        }
-            //    });
-            //});
         }
     }
 }

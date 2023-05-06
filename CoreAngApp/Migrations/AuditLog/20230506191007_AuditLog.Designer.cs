@@ -11,14 +11,14 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CoreAngApp.Migrations.AuditLog
 {
     [DbContext(typeof(AuditLogContext))]
-    [Migration("20230307055618_AuditLog")]
+    [Migration("20230506191007_AuditLog")]
     partial class AuditLog
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.3");
+            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
 
             modelBuilder.Entity("Core.Models.AuditEntry", b =>
                 {
@@ -59,8 +59,8 @@ namespace CoreAngApp.Migrations.AuditLog
                     b.Property<string>("ObjectValue")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("TenantId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("TenantId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("TEXT");

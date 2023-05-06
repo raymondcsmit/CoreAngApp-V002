@@ -16,7 +16,7 @@ namespace ConfigureApp.Infrastructure
         public string Name { get; set; }
         public ICollection<Field> Fields { get; set; }
         public ICollection<DisplayedColumn> DisplayedColumns { get; set; }
-        public int ApplicationId { get; set; }
+        public long ApplicationId { get; set; }
         public ApplicationModule Application { get; set; }
     }
 
@@ -27,7 +27,7 @@ namespace ConfigureApp.Infrastructure
         public string Type { get; set; }
         public string Label { get; set; }
         public bool Required { get; set; }
-        public int FormId { get; set; }
+        public long FormId { get; set; }
         public Form Form { get; set; }
         public ICollection<Option> Options { get; set; }
     }
@@ -37,7 +37,7 @@ namespace ConfigureApp.Infrastructure
         public long OptionId { get { return Id; } set { Id = value; } }
         public string Label { get; set; }
         public string Value { get; set; }
-        public int FieldId { get; set; }
+        public long FieldId { get; set; }
         public Field Field { get; set; }
     }
 
@@ -45,7 +45,7 @@ namespace ConfigureApp.Infrastructure
     {
         public long DisplayedColumnId { get { return Id; } set { Id = value; } }
         public string ColumnName { get; set; }
-        public int FormId { get; set; }
+        public long FormId { get; set; }
         public Form Form { get; set; }
     }
 
