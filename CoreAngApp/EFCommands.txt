@@ -16,12 +16,14 @@ Add-Migration SecurityApp -Context ApplicationDbContext
 Add-Migration AuditLog -Context AuditLogContext
 Add-Migration DatasyncOpt -Context DataSyncContext
 Add-Migration ConfigureApp -Context ConfigureAppDbContext
+Add-Migration ProvidersApp -Context ProviderContext
 
 
 Update-Database -Context ApplicationDbContext
 Update-Database -Context AuditLogContext
 Update-Database -Context DataSyncContext
 Update-Database -Context ConfigureAppDbContext
+Update-Database -Context ProviderContext
 
 
 

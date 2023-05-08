@@ -11,7 +11,7 @@ using SecurityApp.Infrastructure;
 namespace CoreAngApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230506191003_SecurityApp")]
+    [Migration("20230508041746_SecurityApp")]
     partial class SecurityApp
     {
         /// <inheritdoc />

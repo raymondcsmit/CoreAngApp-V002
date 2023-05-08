@@ -836,6 +836,7 @@
     <ProjectReference Include="..\Modules\AppConfiguration\ConfigureApp.Infrastructure\ConfigureApp.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\AuditLog\AuditLog.Infrastructure\AuditLog.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\DataSync\DataSyncApp.Infrastructure\DataSyncApp.Infrastructure.csproj" />
+    <ProjectReference Include="..\Modules\OAuthProviders\Providers.Infrastructure\Providers.Infrastructure.csproj" />
     <ProjectReference Include="..\Modules\Security\SecurityApp.Infrastructure\SecurityApp.Infrastructure.csproj" />
   </ItemGroup>
 

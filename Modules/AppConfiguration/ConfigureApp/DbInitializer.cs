@@ -135,14 +135,14 @@ namespace ConfigureApp
                     
                     ActionApis = new ActionApi[]
                     {
-                        new ActionApi{Action= FormActions.Create, ApiMethod }
+                        new ActionApi{Action= FormActions.Create, ApiMethod="Create" }
                     }
                     
                 }
                 }
             };
 
-            context.Applications.Add(application);
+            context.Applications.Add(oAuthapplication);
             context.SaveChanges();
         }
     }
