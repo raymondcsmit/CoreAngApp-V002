@@ -14,4 +14,7 @@ namespace ConfigureApp.Application.Queries
     {
         public long ApplicationId { get; set; }
     }
+    public class GetAllApplicationQuery : IQuery<ResponseResult>
+    {
+    }
 }

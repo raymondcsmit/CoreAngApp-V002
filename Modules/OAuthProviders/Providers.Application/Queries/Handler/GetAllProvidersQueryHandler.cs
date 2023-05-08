@@ -21,7 +21,7 @@ namespace Providers.Application.Queries.Handler
             _dbContext = dbContext;
         }
 
-        public async Task<ResponseResult> Handle(GetAllProvidersQuery query)
+        public async Task<ResponseResult> Handle(GetAllProvidersQuery query, CancellationToken cancellationToken)
         {
             var providers = await _dbContext.ProviderSettingsEntries.ToListAsync();
 
@@ -43,9 +43,6 @@ namespace Providers.Application.Queries.Handler
             };
         }
 
-        public Task<ResponseResult> Handle(GetAllProvidersQuery request, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

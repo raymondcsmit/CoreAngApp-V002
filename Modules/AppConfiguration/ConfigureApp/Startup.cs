@@ -6,6 +6,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ConfigureApp.Infrastructure;
 using ConfigureApp.Application.Queries.Handler;
+using ConfigureApp.Application.Queries;
+using Core.Responses;
+using MediatR;
+using System.Text.Json.Serialization;
 
 namespace ConfigureApp
 {
@@ -22,8 +26,18 @@ namespace ConfigureApp
         public override void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ConfigureAppDbContext>(options => OptionsBuilder.SelectDatabase<ConfigureAppDbContext>());
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetApplicationQueryHandler).Assembly));
-            services.AddControllers();
+            //services.AddMediatR(typeof(GetAllApplicationQueryHandler).Assembly);
+            //services.AddMediatR(GetAllApplicationQueryHandler);
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(GetAllApplicationQueryHandler).Assembly));
+            //services.AddTransient<IRequestHandler<GetAllApplicationQuery, ResponseResult>, GetAllApplicationQueryHandler>();
+            //services.AddTransient<IRequestHandler<GetApplicationQuery, ResponseResult>, GetApplicationQueryHandler>();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+                options.JsonSerializerOptions.WriteIndented = true;
+            });
+
+            ///services.AddControllers();
 
         }
 

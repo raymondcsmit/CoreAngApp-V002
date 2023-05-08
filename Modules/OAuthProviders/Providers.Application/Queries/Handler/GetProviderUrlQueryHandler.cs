@@ -23,7 +23,7 @@ namespace Providers.Application.Queries.Handler
             _oauth2ProviderFactory = oauth2ProviderFactory;
         }
 
-        public async Task<ResponseResult> Handle(GetProviderURLQuery query)
+        public async Task<ResponseResult> Handle(GetProviderURLQuery query, CancellationToken cancellationToken )
         {
             var providerdata = await _dbContext.ProviderSettingsEntries.Where(c=>c.Name==query.ProviderName).FirstOrDefaultAsync();
 

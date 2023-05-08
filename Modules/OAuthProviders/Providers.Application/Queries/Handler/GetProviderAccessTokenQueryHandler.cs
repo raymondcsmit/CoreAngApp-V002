@@ -24,7 +24,7 @@ namespace Providers.Application.Queries.Handler
             _dbContext = dbContext;
             _oauth2ProviderFactory = oauth2ProviderFactory;
         }
-        public async Task<ResponseResult> Handle(GetProviderAccessTokenQuery query)
+        public async Task<ResponseResult> Handle(GetProviderAccessTokenQuery query, CancellationToken cancellationToken)
         {
             OAuthToken oAuthToken;
 

@@ -21,7 +21,7 @@ namespace ConfigureApp.Application.Queries.Handler
             _dbContext = dbContext;
         }
 
-        public async Task<ResponseResult> Handle(GetApplicationQuery query)
+        public async Task<ResponseResult> Handle(GetApplicationQuery query, CancellationToken cancellationToken)
         {
             var application = await _dbContext.Applications
                 .Include(a => a.Forms)

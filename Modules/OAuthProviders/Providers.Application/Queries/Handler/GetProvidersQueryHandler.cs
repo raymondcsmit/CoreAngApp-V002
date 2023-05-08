@@ -21,7 +21,7 @@ namespace Providers.Application.Queries.Handler
             _dbContext = dbContext;
         }
 
-        public async Task<ResponseResult> Handle(GetProviderQuery query)
+        public async Task<ResponseResult> Handle(GetProviderQuery query, CancellationToken cancellationToken)
         {
             var provider = await _dbContext.ProviderSettingsEntries.Where(c=>c.Name==query.ProviderName).FirstOrDefaultAsync();
 

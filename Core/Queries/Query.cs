@@ -19,17 +19,46 @@ namespace Core.Queries
     public interface IQuery<TResponse> : IRequest<TResponse>
     {
     }
-    public interface IQueryHandler<in TQuery, TResponse>
-        where TQuery : IQuery<TResponse>
+    //public interface IQueryHandler<in TQuery, TResponse>
+    //    where TQuery : IQuery<TResponse>
+    //{
+    //    Task<TResponse> Handle(TQuery query);
+    //}
+
+    //public interface IQueryHandler<in TQuery> : IQueryHandler<TQuery, ResponseResult>
+    //    where TQuery : IQuery<ResponseResult>
+    //{
+    //}
+    public interface IQueryHandler<in TQuery, TResponse> : IRequestHandler<TQuery, TResponse>
+    where TQuery : IQuery<TResponse>
     {
-        Task<TResponse> Handle(TQuery query);
     }
 
-    public interface IQueryHandler<in TQuery> : IQueryHandler<TQuery, ResponseResult>
+    public interface IQueryHandler<in TQuery> : IRequestHandler<TQuery, ResponseResult>
         where TQuery : IQuery<ResponseResult>
     {
     }
 
+
+    /*
+      public interface IQuery : IRequest<ResponseResult>
+    {
+    }
+
+    public interface IQuery<TResponse> : IRequest<TResponse>
+    {
+    }
+
+    public interface IQueryHandler<TQuery, TResponse> : IRequestHandler<TQuery, TResponse>
+        where TQuery : IRequest<TResponse>
+    {
+    }
+
+    public interface IQueryHandler<TQuery> : IRequestHandler<TQuery, ResponseResult>
+        where TQuery : IRequest<ResponseResult>
+    {
+    }
+     */
     //public interface IQuery<TResult> { }
 
     //public interface IQueryHandler<TQuery, TResult> where TQuery : IQuery<TResult>
