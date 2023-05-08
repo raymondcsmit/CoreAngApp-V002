@@ -14,6 +14,7 @@ import {
 } from "./dialog.component";
 import { cfApplication, cfFormField } from "./configure.model";
 import { ConfigService } from "../builder/configure.service";
+import { Application } from "../builder/models";
 
 @Component({
   selector: "app-grid2",
@@ -59,7 +60,7 @@ export class ConfigureFormComponent implements OnInit {
     @ViewChild(MatPaginator) paginator?: MatPaginator;
     @ViewChild(MatSort) sort?: MatSort;
     @Input() columnsToDisplay?: string[];
-    config?: cfApplication;
+    config?: Application;
     constructor(
       private fb: FormBuilder,
       private dialog: MatDialog,
@@ -68,7 +69,7 @@ export class ConfigureFormComponent implements OnInit {
   
     ngOnInit() {
       this.displayedColumns =
-        this.columnsToDisplay || this.config?.forms[0].displayedColumns;
+        this.columnsToDisplay || this.config?.forms.$values[0].displayedColumns;
       this.dataSource = new MatTableDataSource<any>([]);
       if (this.paginator) {
         this.dataSource.paginator = this.paginator;
@@ -76,7 +77,7 @@ export class ConfigureFormComponent implements OnInit {
       if (this.sort) {
         this.dataSource.sort = this.sort;
       }
-      this.configsrv.getConfigData2().subscribe((res: cfApplication) => {
+      this.configsrv.getConfig().subscribe((res: Application[]) => {
         this.config = res;
       });
     }

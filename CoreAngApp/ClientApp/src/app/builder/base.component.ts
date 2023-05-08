@@ -8,7 +8,7 @@ import { defaultObject, GenForm } from './models';
   template: '<p>Base Component</p>'
 })
 export class BaseComponent  {
-    public configuration: GenForm=defaultObject.forms[0];
+    public configuration: GenForm=defaultObject.forms.$values[0];
     public formData?: Observable<any>;
     public listData$?: Observable<any[]>;
     public form: FormGroup;

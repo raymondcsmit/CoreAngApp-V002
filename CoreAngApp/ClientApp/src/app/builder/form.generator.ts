@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { map, switchMap } from 'rxjs/operators';
 
 import { from, Observable } from 'rxjs';
-import { defaultObject, Field, FieldOption, GenForm, RootObject } from './models';
+import { Application, defaultObject, Field, FieldOption, GenForm, RootObject } from './models';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormComponent } from './form.component';
 import { BaseComponent } from './base.component';
@@ -18,15 +18,15 @@ import { ConfigService } from './configure.service';
 })
 export class WRRenderComponent implements OnInit {
 
-  rootObject: RootObject= defaultObject;
+  rootObject: Application = defaultObject;
   @Input() component: any;
   @Input() data: any;
   constructor(private http: HttpClient,public viewContainerRef: ViewContainerRef,private configsrv:ConfigService,  private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    this.configsrv.getConfigData().subscribe(data => {
-      this.rootObject = data;
-        this.rootObject.forms.forEach((frm:GenForm)=>{
+    this.configsrv.getConfig().subscribe(data => {
+      this.rootObject = data[0];
+        this.rootObject.forms.$values.forEach((frm:GenForm)=>{
             const componentRef: ComponentRef<BaseComponent> = this.viewContainerRef.createComponent(FormComponent);
             componentRef.instance.formData = this.data;
             componentRef.instance.configuration=frm;
@@ -39,6 +39,21 @@ export class WRRenderComponent implements OnInit {
         });
 
     });
+    // this.configsrv.getConfigData().subscribe(data => {
+    //   this.rootObject = data;
+    //     this.rootObject.forms.forEach((frm:GenForm)=>{
+    //         const componentRef: ComponentRef<BaseComponent> = this.viewContainerRef.createComponent(FormComponent);
+    //         componentRef.instance.formData = this.data;
+    //         componentRef.instance.configuration=frm;
+    //         const url = this.activatedRoute.snapshot.url.join('/'+frm.name);
+    //         const route = {
+    //           path: url,
+    //           component: this.component
+    //         };
+    //         this.router.config.push(route);
+    //     });
+
+    // });
 
     
   }
