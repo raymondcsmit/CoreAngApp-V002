@@ -12,6 +12,9 @@ namespace ProvidersApp.Controllers
     [Route("api/{module}/{controller}")]
     public class ProviderController : ControllerBase
     {
+        //Todo: Get General Token, Same token be used for All the credentials behind obtaining the token will be one
+        //: Get Specific Token, Each user will maintain his Own Token. Individual Credentials behind obtaining the token 
+
         private readonly IMediator mediatR;
         private readonly ILogger<ProviderController> _logger;
 

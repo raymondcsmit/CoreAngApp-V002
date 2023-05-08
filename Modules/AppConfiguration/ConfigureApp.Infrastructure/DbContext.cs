@@ -86,6 +86,8 @@ namespace ConfigureApp.Infrastructure
 
                 entity.Ignore(e => e.DisplayedColumnId);
             });
+            modelBuilder.Entity<ActionApi>().HasOne<Form>(a => a.ForForm).WithMany(f => f.ActionApis).HasForeignKey(a => a.FormId);
+
         }
     }
 
