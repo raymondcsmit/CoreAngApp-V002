@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
+    <PackageReference Include="MailKit" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\..\Core\Core.csproj" />
-    <ProjectReference Include="..\Providers.Domain\Providers.Domain.csproj" />
+    <ProjectReference Include="..\EmailApp.Domain\EmailApp.Domain.csproj" />
   </ItemGroup>
 
 </Project>
