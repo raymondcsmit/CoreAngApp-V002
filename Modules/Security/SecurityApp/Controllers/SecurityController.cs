@@ -1,11 +1,9 @@
 ﻿using Core.Responses;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SecurityApp.Application.Command;
 using SecurityApp.Application.Queries;
-using SecurityApp.Domain;
 using System.Threading.Tasks;
 
 namespace SecurityApp.Controllers
@@ -18,16 +16,11 @@ namespace SecurityApp.Controllers
 		private readonly IMediator mediatR;
 		private readonly ILogger<SecurityController> _logger;
 
-		public SecurityController(ILogger<SecurityController> logger, UserManager<ApplicationUser> um, IMediator mdr)
+		public SecurityController(ILogger<SecurityController> logger, IMediator mdr)
 		{
 			_logger = logger;
 			mediatR = mdr;
 		}
-		//[HttpPost(nameof(SignIn))]
-		//public async Task<Result> SignIn(RegisterRequest request)
-		//{
-		//    return await mediatR.Send(new RegisterUserCommand(request.UserName, request.Password));
-		//}
 		[HttpPost(nameof(LogIn))]
 		public async Task<ResponseResult> LogIn([FromBody] LoginCommand command)
 		{
@@ -42,6 +35,11 @@ namespace SecurityApp.Controllers
 		public async Task<ResponseResult> Confirm([FromBody] ConfirmCommand command)
 		{
 			return await mediatR.Send(command);
+		}
+		[HttpPost(nameof(Logout))]
+		public async Task<ResponseResult> Logout()
+		{
+			return await mediatR.Send(new LogOutCommand());
 		}
 		[HttpGet(nameof(Get))]
 		public async Task<ResponseResult> Get()

@@ -49,6 +49,7 @@ namespace CoreAngApp
 				tenant.AppMode = appMode;
 				return tenant;
 			});
+
 			var optionsBuilder = new CoreDbContextOptionsBuilder(Configuration);
 			services.AddSingleton<CoreDbContextOptionsBuilder>(optionsBuilder);
 
@@ -131,6 +132,10 @@ namespace CoreAngApp
 						endpoints.MapControllerRoute(
 							name: $"module_{module.RoutePrefix}",
 							pattern: $"{module.RoutePrefix}/{{controller=Home}}/{{action=Index}}/{{id?}}");
+						//if (module.IsSignalR)
+						//{
+						//	endpoints.MapHub<Hub>($"{module.RoutePrefix}/notification-hub");
+						//}
 					});
 
 					// Configure module-specific middleware

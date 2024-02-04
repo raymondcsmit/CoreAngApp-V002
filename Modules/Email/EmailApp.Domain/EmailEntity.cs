@@ -6,6 +6,6 @@
 		public string ToDisplayName { get; set; }
 		public string EmailSubject { get; set; }
 		public string EmailBody { get; set; }
-		public List<byte[]>? Attachments { get; set; }
+		public List<byte[]> Attachments { get; set; }
 	}
 }

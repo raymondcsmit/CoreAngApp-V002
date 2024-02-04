@@ -4,16 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Contracts
 {
-    public class PluginStartupBase : IPluginStartup
-    {
-        public string RoutePrefix { get; set; }
+	public class PluginStartupBase : IPluginStartup
+	{
+		public string RoutePrefix { get; set; }
+		public bool IsSignalR { get; set; } = false;
 
-        public virtual void ConfigureServices(IServiceCollection services)
-        {
-        }
+		public virtual void ConfigureServices(IServiceCollection services)
+		{
+		}
 
-        public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-        {
-        }
-    }
+		public virtual void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		{
+		}
+	}
 }

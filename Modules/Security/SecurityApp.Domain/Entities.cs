@@ -48,5 +48,14 @@ namespace SecurityApp.Domain
 		public ICollection<ApplicationRolePrivileges> ApplicationRolePrivileges { get; set; }
 	}
 
-
+	public class UserActivity
+	{
+		public long Id { get; set; }
+		public long UserId { get; set; }
+		public DateTime Timestamp { get; set; }
+		public string ActivityType { get; set; } // "Login" or "Logout"
+		public string IPAddress { get; set; }
+		public string MacAddress { get; set; }
+		public ApplicationUser User { get; set; }
+	}
 }

@@ -6,10 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Events\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="MediatR" Version="12.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.1" />
@@ -20,6 +16,7 @@
     <ProjectReference Include="..\..\Email\EmailApp.Application\EmailApp.Application.csproj" />
     <ProjectReference Include="..\..\Email\EmailApp.Domain\EmailApp.Domain.csproj" />
     <ProjectReference Include="..\SecurityApp.Domain\SecurityApp.Domain.csproj" />
+    <ProjectReference Include="..\SecurityApp.Infrastructure\SecurityApp.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

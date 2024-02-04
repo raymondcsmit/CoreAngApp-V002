@@ -8,16 +8,15 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using SecurityApp.Domain;
-using System.Net;
 
 namespace SecurityApp.Application.Command.Handler
 {
-
 	public class RegisterCommandHandler : IRequestHandler<RegisterCommand, ResponseResult>
 	{
 		private readonly UserManager<ApplicationUser> _userManager;
 		private readonly IMediator _mediator;
 		private readonly Tenant _tenant;
+
 		public RegisterCommandHandler(UserManager<ApplicationUser> userManager, IOptions<Tenant> options, IMediator mediator)
 		{
 			_userManager = userManager;
@@ -29,18 +28,12 @@ namespace SecurityApp.Application.Command.Handler
 		{
 			var userExists = await _userManager.FindByNameAsync(request.Email);
 
-			//if user exist return 500 error
 			if (userExists != null)
-				return new ResponseResult()
-				{
-					StatusCode = HttpStatusCode.BadRequest,
-					Success = false,
-					Message = "User already exists!"
-				};
-			//string confirmationCode = GeneratedCode();
-			//Todo Add default role to user
-			//create user
-			ApplicationUser user = new ApplicationUser()
+			{
+				return ResponseFactory.CreateBadRequest("User already exists!");
+			}
+
+			ApplicationUser user = new ApplicationUser
 			{
 				Email = request.Email,
 				SecurityStamp = Guid.NewGuid().ToString(),
@@ -48,47 +41,37 @@ namespace SecurityApp.Application.Command.Handler
 				IsEnabled = false,
 				TenantId = request.TenantId
 			};
-			var result = await _userManager.CreateAsync(user, request.Password);
-			string confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-			user.ConfirmationCode = confirmationCode;
-			await _userManager.UpdateAsync(user);
-			if (result.Succeeded)
-			{
-				var @event = new AuditLogEvent { AuditData = new AuditEntry() { Action = "Register User", EntityName = "ApplicationUser", ObjectValue = SerializeDeSerialize.SerializeObject(user) } };
-				await _mediator.Publish(@event);
-				var @syncEvent = new SyncLogEvent { Data = new SyncTable() { JsonObject = SerializeDeSerialize.SerializeObject(user), TableName = "ApplicationUser", TenantId = _tenant.TenantId, FullTableName = "ApplicationUser", TablePKId = user.Id.ToString() } };
-				await _mediator.Publish(@syncEvent);
-				string emailBody = CreateEmailBody(user, confirmationCode);
-				var @emailEvent = new SendEmailEvent { EmailObject = new EmailEntity() { ToEmail = user.Email, EmailSubject = "Confirmation Code", ToDisplayName = user.FullName, EmailBody = emailBody } };
-				await _mediator.Publish(@emailEvent);
-				return new ResponseResult()
-				{
 
-					Data = user,
-					StatusCode = HttpStatusCode.OK,
-					Success = true,
-					Message = "User created successfully!"
-				};
-			}
-			return new ResponseResult()
+			var result = await _userManager.CreateAsync(user, request.Password);
+
+			if (!result.Succeeded)
 			{
-				StatusCode = HttpStatusCode.BadRequest,
-				Success = true,
-				Message = "User creation failed! Please check user details and try again."
-			};
-			//return tokenHandler.WriteToken(token);
+				return ResponseFactory.CreateBadRequest("User creation failed! Please check user details and try again.");
+			}
+
+			string confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+			// Assuming you handle the confirmation code storage elsewhere or in the email body itself
+
+			await PublishEvents(user, cancellationToken);
+
+			string emailBody = CreateEmailBody(user, confirmationCode);
+			await _mediator.Publish(new SendEmailEvent { EmailObject = new EmailEntity { ToEmail = user.Email, EmailSubject = "Confirmation Code", ToDisplayName = user.FullName, EmailBody = emailBody } });
+
+			return ResponseFactory.CreateSuccess("User created successfully!", user);
 		}
 
-		private string GeneratedCode()
+		private async Task PublishEvents(ApplicationUser user, CancellationToken cancellationToken)
 		{
-			Random generator = new Random();
-			return generator.Next(0, 1000000).ToString("D6");
+			var auditLogEvent = new AuditLogEvent { AuditData = new AuditEntry { Action = "Register User", EntityName = "ApplicationUser", ObjectValue = SerializeDeSerialize.SerializeObject(user) } };
+			await _mediator.Publish(auditLogEvent, cancellationToken);
+
+			var syncEvent = new SyncLogEvent { Data = new SyncTable { JsonObject = SerializeDeSerialize.SerializeObject(user), TableName = "ApplicationUser", TenantId = _tenant.TenantId, FullTableName = "ApplicationUser", TablePKId = user.Id.ToString() } };
+			await _mediator.Publish(syncEvent, cancellationToken);
 		}
 
 		private string CreateEmailBody(ApplicationUser user, string code)
 		{
-			string emailBody = $"<p>Please use the given code to confirm your registration: <a href='http://localhost:4200/security/confirm?email={Uri.EscapeDataString(user.Email)}&code={code}'><h2>Click Here</h2></a></p>";
-			return emailBody;
+			return $"<p>Please use the given code to confirm your registration: <a href='http://localhost:4200/security/confirm?email={Uri.EscapeDataString(user.Email)}&code={code}'><h2>Click Here</h2></a></p>";
 		}
 	}
 }

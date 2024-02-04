@@ -1,15 +1,12 @@
-﻿using AuditLog.Application.Events.Handler;
-using Core;
+﻿using Core;
 using Core.Contracts;
-using EmailApp.Domain;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace EmailApp
+namespace NotificationApp
 {
-
 	public class Startup : PluginStartupBase
 	{
 		private readonly CoreDbContextOptionsBuilder OptionsBuilder;
@@ -18,25 +15,26 @@ namespace EmailApp
 		{
 			OptionsBuilder = optb;
 			config = _config;
-			RoutePrefix = "Email";
+			RoutePrefix = "SignalR";
+			IsSignalR = true;
 		}
 		public override void ConfigureServices(IServiceCollection services)
 		{
-			var emailConfig = config.GetSection("EmailConfiguration").Get<EmailConfiguration>()
-					  ?? throw new InvalidOperationException("Email configuration is required.");
-
-			services.AddSingleton(emailConfig);
-			services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(SendEmailEventHandler).Assembly));
-			services.AddControllers();
+			//services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(SendEmailEventHandler).Assembly));
+			services.AddSignalR();
 		}
 
 		public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapControllers();
+				endpoints.MapHub<NotificationHub>("signalr/notification-hub");
+				// Map other endpoints like MVC controllers or Razor Pages
 			});
+			//app.UseEndpoints(endpoints =>
+			//{
+			//	endpoints.MapControllers();
+			//});
 		}
 	}
-
 }

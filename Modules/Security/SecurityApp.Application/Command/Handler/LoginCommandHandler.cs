@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using SecurityApp.Application.Events;
 using SecurityApp.Domain;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
@@ -62,6 +63,17 @@ namespace SecurityApp.Application.Command.Handler
 			user.RefreshTokens = user.RefreshTokens ?? new List<RefreshToken>();
 			user.RefreshTokens.Add(refreshToken);
 			await _userManager.UpdateAsync(user);
+			await _mediator.Publish(new UserActivityEvent
+			{
+				ActivityObject = new UserActivity
+				{
+					UserId = user.Id,
+					Timestamp = DateTime.UtcNow,
+					ActivityType = "Login",
+					IPAddress = this.contextAccessor.HttpContext.Connection.RemoteIpAddress.ToString()
+
+				}
+			});
 
 			var @event = new AuditLogEvent
 			{
