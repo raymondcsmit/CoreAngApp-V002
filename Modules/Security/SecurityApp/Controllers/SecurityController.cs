@@ -38,6 +38,11 @@ namespace SecurityApp.Controllers
 		{
 			return await mediatR.Send(command);
 		}
+		[HttpPost(nameof(Confirm))]
+		public async Task<ResponseResult> Confirm([FromBody] ConfirmCommand command)
+		{
+			return await mediatR.Send(command);
+		}
 		[HttpGet(nameof(Get))]
 		public async Task<ResponseResult> Get()
 		{

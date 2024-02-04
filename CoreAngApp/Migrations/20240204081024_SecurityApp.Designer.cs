@@ -11,14 +11,14 @@ using SecurityApp.Infrastructure;
 namespace CoreAngApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230920114718_SecurityApp")]
+    [Migration("20240204081024_SecurityApp")]
     partial class SecurityApp
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "7.0.5");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
             modelBuilder.Entity("Core.Models.RefreshToken", b =>
                 {
@@ -218,6 +218,9 @@ namespace CoreAngApp.Migrations
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ConfirmationCode")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Email")

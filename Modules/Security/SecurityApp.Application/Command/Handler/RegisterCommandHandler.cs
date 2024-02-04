@@ -37,7 +37,7 @@ namespace SecurityApp.Application.Command.Handler
 					Success = false,
 					Message = "User already exists!"
 				};
-
+			//string confirmationCode = GeneratedCode();
 			//Todo Add default role to user
 			//create user
 			ApplicationUser user = new ApplicationUser()
@@ -46,17 +46,19 @@ namespace SecurityApp.Application.Command.Handler
 				SecurityStamp = Guid.NewGuid().ToString(),
 				UserName = request.Email,
 				IsEnabled = false,
-
-
+				TenantId = request.TenantId
 			};
 			var result = await _userManager.CreateAsync(user, request.Password);
+			string confirmationCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+			user.ConfirmationCode = confirmationCode;
+			await _userManager.UpdateAsync(user);
 			if (result.Succeeded)
 			{
 				var @event = new AuditLogEvent { AuditData = new AuditEntry() { Action = "Register User", EntityName = "ApplicationUser", ObjectValue = SerializeDeSerialize.SerializeObject(user) } };
 				await _mediator.Publish(@event);
 				var @syncEvent = new SyncLogEvent { Data = new SyncTable() { JsonObject = SerializeDeSerialize.SerializeObject(user), TableName = "ApplicationUser", TenantId = _tenant.TenantId, FullTableName = "ApplicationUser", TablePKId = user.Id.ToString() } };
 				await _mediator.Publish(@syncEvent);
-				string emailBody = CreateEmailBody();
+				string emailBody = CreateEmailBody(user, confirmationCode);
 				var @emailEvent = new SendEmailEvent { EmailObject = new EmailEntity() { ToEmail = user.Email, EmailSubject = "Confirmation Code", ToDisplayName = user.FullName, EmailBody = emailBody } };
 				await _mediator.Publish(@emailEvent);
 				return new ResponseResult()
@@ -83,11 +85,10 @@ namespace SecurityApp.Application.Command.Handler
 			return generator.Next(0, 1000000).ToString("D6");
 		}
 
-		private string CreateEmailBody()
+		private string CreateEmailBody(ApplicationUser user, string code)
 		{
-			string emailBody = $"<p>Please use the given code to confirm registration: <h2>{GeneratedCode()} </h2></p>";
+			string emailBody = $"<p>Please use the given code to confirm your registration: <a href='http://localhost:4200/security/confirm?email={Uri.EscapeDataString(user.Email)}&code={code}'><h2>Click Here</h2></a></p>";
 			return emailBody;
 		}
 	}
-
 }
