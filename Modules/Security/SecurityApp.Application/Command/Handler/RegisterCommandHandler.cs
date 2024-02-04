@@ -2,6 +2,8 @@
 using Core.Models;
 using Core.Responses;
 using Core.Utilities;
+using EmailApp.Application.Events;
+using EmailApp.Domain;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -54,10 +56,9 @@ namespace SecurityApp.Application.Command.Handler
 				await _mediator.Publish(@event);
 				var @syncEvent = new SyncLogEvent { Data = new SyncTable() { JsonObject = SerializeDeSerialize.SerializeObject(user), TableName = "ApplicationUser", TenantId = _tenant.TenantId, FullTableName = "ApplicationUser", TablePKId = user.Id.ToString() } };
 				await _mediator.Publish(@syncEvent);
-				string code = GeneratedCode();
-				//var @emailEvent= new SendEmailEvent {EmailEntity= new EmailEntity() { } }
-				SendEmail(user, code);
-				//await _mediator.Publish(new UserCreatedEvent { UserName = user.UserName, Email = user.Email });
+				string emailBody = CreateEmailBody();
+				var @emailEvent = new SendEmailEvent { EmailObject = new EmailEntity() { ToEmail = user.Email, EmailSubject = "Confirmation Code", ToDisplayName = user.FullName, EmailBody = emailBody } };
+				await _mediator.Publish(@emailEvent);
 				return new ResponseResult()
 				{
 
@@ -82,9 +83,10 @@ namespace SecurityApp.Application.Command.Handler
 			return generator.Next(0, 1000000).ToString("D6");
 		}
 
-		private void SendEmail(ApplicationUser user, string code)
+		private string CreateEmailBody()
 		{
-
+			string emailBody = $"<p>Please use the given code to confirm registration: <h2>{GeneratedCode()} </h2></p>";
+			return emailBody;
 		}
 	}
 

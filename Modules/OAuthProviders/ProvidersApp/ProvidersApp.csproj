@@ -14,7 +14,7 @@
 	  <ProjectReference Include="..\Providers.Infrastructure\Providers.Infrastructure.csproj" />
 	</ItemGroup>
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
-		<Exec Command="if not exist &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules&quot; mkdir &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules&quot;" />
-		<Exec Command="if not exist &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules\$(ProjectName)&quot; mkdir &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules\$(ProjectName)&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net7.0\Modules\$(ProjectName)\&quot; /Y&#xD;&#xA;&#xD;&#xA;" />
+		<Exec Command="if not exist &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net8.0\Modules&quot; mkdir &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net8.0\Modules&quot;" />
+		<Exec Command="if not exist &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net8.0\Modules\$(ProjectName)&quot; mkdir &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net8.0\Modules\$(ProjectName)&quot;&#xD;&#xA;xcopy &quot;$(TargetDir)*.dll&quot; &quot;$(SolutionDir)CoreAngApp\bin\$(ConfigurationName)\net8.0\Modules\$(ProjectName)\&quot; /Y&#xD;&#xA;&#xD;&#xA;" />
 	</Target>
 </Project>
