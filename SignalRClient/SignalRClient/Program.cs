@@ -15,6 +15,7 @@ namespace SignalRClient
 				Console.WriteLine($"{user}: {message}");
 			});
 
+
 			await connection.StartAsync();
 			await connection.InvokeAsync("SendMessage", "User1", "Hello, World!");
 
