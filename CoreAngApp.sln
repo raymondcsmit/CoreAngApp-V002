@@ -63,13 +63,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmailApp.Domain", "Modules\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Notification", "Notification", "{94C2324E-9CFE-4951-8DC0-93F16B87A070}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationApp", "Modules\Notifications\NotificationApp\NotificationApp.csproj", "{6E5A6D82-C7B4-488E-A69B-5A1B555C97B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationApp", "Modules\Notifications\NotificationApp\NotificationApp.csproj", "{6E5A6D82-C7B4-488E-A69B-5A1B555C97B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationApp.Application", "Modules\Notifications\NotificationApp.Application\NotificationApp.Application.csproj", "{12017EDD-0216-4651-B7C5-CD4749C75FF4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationApp.Application", "Modules\Notifications\NotificationApp.Application\NotificationApp.Application.csproj", "{12017EDD-0216-4651-B7C5-CD4749C75FF4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotificationApp.Domain", "Modules\Notifications\NotificationApp.Domain\NotificationApp.Domain.csproj", "{C6C5E403-1ECD-4F7D-BE2E-E29A549A4A7A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationApp.Domain", "Modules\Notifications\NotificationApp.Domain\NotificationApp.Domain.csproj", "{C6C5E403-1ECD-4F7D-BE2E-E29A549A4A7A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SignalRClient", "SignalRClient\SignalRClient\SignalRClient.csproj", "{CC3DA1A2-27ED-48AE-A0DC-6B1D13D797B8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRClient", "SignalRClient\SignalRClient\SignalRClient.csproj", "{CC3DA1A2-27ED-48AE-A0DC-6B1D13D797B8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Middleware", "Core.Middleware\Core.Middleware.csproj", "{215FA07B-0819-497F-8743-03BE2578EAFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -181,6 +183,10 @@ Global
 		{CC3DA1A2-27ED-48AE-A0DC-6B1D13D797B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC3DA1A2-27ED-48AE-A0DC-6B1D13D797B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC3DA1A2-27ED-48AE-A0DC-6B1D13D797B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{215FA07B-0819-497F-8743-03BE2578EAFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{215FA07B-0819-497F-8743-03BE2578EAFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{215FA07B-0819-497F-8743-03BE2578EAFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{215FA07B-0819-497F-8743-03BE2578EAFC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

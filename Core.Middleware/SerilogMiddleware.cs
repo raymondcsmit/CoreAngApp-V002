@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Serilog.Events;
-using System;
 using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CoreAngApp.Middleware
+namespace Core.Middleware
 {
 	public class SerilogMiddleware
 	{
