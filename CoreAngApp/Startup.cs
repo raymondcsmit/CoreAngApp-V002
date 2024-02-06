@@ -39,8 +39,11 @@ namespace CoreAngApp
 			WebHostEnv = env;
 
 			Log.Logger = new LoggerConfiguration()
-			  .WriteTo.SQLite(sqliteDbPath: "serilogDB.db", batchSize: 1)
+			.ReadFrom.Configuration(Configuration)
 			.CreateLogger();
+			//Log.Logger = new LoggerConfiguration()
+			//  .WriteTo.SQLite(sqliteDbPath: "serilogDB.db", batchSize: 1)
+			//.CreateLogger();
 
 			Log.Information("Starting up");
 		}
