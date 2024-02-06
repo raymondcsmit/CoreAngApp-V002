@@ -2,13 +2,16 @@ using Core;
 using Core.Contracts;
 using Core.Insfrastructure;
 using Core.Models;
+using CoreAngApp.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Serilog;
 using System.Collections.Generic;
 using System.IO;
 
@@ -34,6 +37,12 @@ namespace CoreAngApp
 			builder.AddEnvironmentVariables();
 			Configuration = builder.Build();
 			WebHostEnv = env;
+
+			Log.Logger = new LoggerConfiguration()
+			  .WriteTo.SQLite(sqliteDbPath: "serilogDB.db", batchSize: 1)
+			.CreateLogger();
+
+			Log.Information("Starting up");
 		}
 
 		public IConfigurationRoot Configuration { get; }
@@ -83,8 +92,9 @@ namespace CoreAngApp
 			});
 		}
 
-		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+		public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
 		{
+			loggerFactory.AddSerilog();
 			app.UseCors("AllowAll");
 			if (env.IsDevelopment())
 			{
@@ -98,7 +108,7 @@ namespace CoreAngApp
 				app.UseHsts();
 			}
 
-
+			app.UseMiddleware<SerilogMiddleware>();
 			app.UseHttpsRedirection();
 			app.UseStaticFiles(new StaticFileOptions()
 			{
