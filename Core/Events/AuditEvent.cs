@@ -17,4 +17,8 @@ namespace Core.Events
 	{
 		public SyncTable Data { get; set; }
 	}
+	public class NotificationEvent : INotification
+	{
+		public NotificationEntity Data { get; set; }
+	}
 }

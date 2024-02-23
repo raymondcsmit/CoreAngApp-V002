@@ -62,6 +62,22 @@ namespace SecurityApp.Application.Command.Handler
 
 			user.RefreshTokens = user.RefreshTokens ?? new List<RefreshToken>();
 			user.RefreshTokens.Add(refreshToken);
+			await SendEvents(user, cancellationToken);
+
+			var tokenDetail = new TokenDetail
+			{
+				AccessToken = token,
+				TokenLifeTime = int.Parse(_configuration["Jwt:ExpiresInMinutes"]),
+				RefreshToken = refreshToken,
+				UserName = user.UserName,
+				Message = "Success"
+			};
+
+			return ResponseFactory.CreateSuccess("User successfully logged in.", tokenDetail);
+		}
+
+		private async Task SendEvents(ApplicationUser user, CancellationToken cancellationToken)
+		{
 			await _userManager.UpdateAsync(user);
 			await _mediator.Publish(new UserActivityEvent
 			{
@@ -86,17 +102,19 @@ namespace SecurityApp.Application.Command.Handler
 			};
 			await _mediator.Publish(@event, cancellationToken);
 
-			var tokenDetail = new TokenDetail
+			var @notificationEvent = new NotificationEvent
 			{
-				AccessToken = token,
-				TokenLifeTime = int.Parse(_configuration["Jwt:ExpiresInMinutes"]),
-				RefreshToken = refreshToken,
-				UserName = user.UserName,
-				Message = "Success"
+				Data = new NotificationEntity
+				{
+					Sender = user.Email,
+					Message = "User login and connected",
+					MessageType = SignalRMessageType.RecievedMessage,
+					IsAll = true
+				}
 			};
-
-			return ResponseFactory.CreateSuccess("User successfully logged in.", tokenDetail);
+			await _mediator.Publish(@notificationEvent, cancellationToken);
 		}
+
 		private string GenerateAccessToken(ApplicationUser user, IList<string> roles)
 		{
 			var tokenHandler = new JwtSecurityTokenHandler();

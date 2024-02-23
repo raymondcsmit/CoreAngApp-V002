@@ -9,6 +9,7 @@ namespace SecurityApp.Infrastructure
 	{
 		public DbSet<ApplicationRolePrivileges> ApplicationRolePrivileges { get; set; }
 		public DbSet<Privileges> Privileges { get; set; }
+		public DbSet<TenantInfo> Tenants { get; set; }
 		public DbSet<UserActivity> UserActivities { get; set; }
 		public ApplicationDbContext(CoreDbContextOptionsBuilder optionsBuilder)
 	   : base(optionsBuilder.SelectDatabase<ApplicationDbContext>())
@@ -33,6 +34,7 @@ namespace SecurityApp.Infrastructure
 				.HasOne(x => x.Privilege)
 				.WithMany(x => x.ApplicationRolePrivileges)
 				.HasForeignKey(x => x.PrivilegeId);
+			builder.Entity<TenantInfo>().HasKey(x => x.TenantId);
 		}
 	}
 }

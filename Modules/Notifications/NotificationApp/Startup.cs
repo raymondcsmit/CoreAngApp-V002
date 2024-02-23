@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NotificationApp.Application;
+using NotificationApp.Application.Service;
 
 namespace NotificationApp
 {
@@ -22,6 +24,7 @@ namespace NotificationApp
 		{
 			//services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(SendEmailEventHandler).Assembly));
 			services.AddSignalR();
+			services.AddScoped<INotificationService, NotificationService>();
 		}
 
 		public override void Configure(IApplicationBuilder app, IWebHostEnvironment env)

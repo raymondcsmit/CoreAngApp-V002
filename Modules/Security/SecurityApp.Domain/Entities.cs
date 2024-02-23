@@ -58,4 +58,15 @@ namespace SecurityApp.Domain
 		public string MacAddress { get; set; }
 		public ApplicationUser User { get; set; }
 	}
+	public class TenantInfo
+	{
+		public long TenantId { get; set; }
+
+		public DateTime Timestamp { get; set; } = DateTime.Now;
+		public string TenantName { get; set; }
+		public string TenantCode { get; set; }
+		public string TenantEmail { get; set; }
+		public string SyncMode { get; set; }
+		public string AppMode { get; set; }
+	}
 }
