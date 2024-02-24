@@ -6,43 +6,43 @@ using System.Runtime.Loader;
 
 namespace Core
 {
-    public class PluginManager
-    {
-        public List<PluginInfo> LoadPlugins(string pluginsPath)
-        {
-            var moduleRootFolder = new DirectoryInfo(pluginsPath);
-            var moduleFolders = moduleRootFolder.GetDirectories();
+	public class PluginManager
+	{
+		public List<PluginInfo> LoadPlugins(string pluginsPath)
+		{
+			var moduleRootFolder = new DirectoryInfo(pluginsPath);
+			var moduleFolders = moduleRootFolder.GetDirectories();
 
-            var plugins = new List<PluginInfo>();
+			var plugins = new List<PluginInfo>();
 
-            foreach (var moduleFolder in moduleFolders)
-            {
-                var dllFiles = moduleFolder.GetFileSystemInfos("*.dll", SearchOption.AllDirectories);
-                foreach (var file in dllFiles)
-                {
-                    Assembly assembly = null;
-                    try
-                    {
-                        assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file.FullName);
-                    }
-                    catch (FileLoadException)
-                    {
-                        assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(file.Name)));
+			foreach (var moduleFolder in moduleFolders)
+			{
+				var dllFiles = moduleFolder.GetFileSystemInfos("*.dll", SearchOption.AllDirectories);
+				foreach (var file in dllFiles)
+				{
+					Assembly assembly = null;
+					try
+					{
+						assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(file.FullName);
+					}
+					catch (FileLoadException)
+					{
+						assembly = Assembly.Load(new AssemblyName(Path.GetFileNameWithoutExtension(file.Name)));
 
-                        if (assembly == null)
-                        {
-                            throw;
-                        }
-                    }
+						if (assembly == null)
+						{
+							throw;
+						}
+					}
 
-                    if (assembly.FullName.Contains(moduleFolder.Name))
-                    {
-                        plugins.Add(new PluginInfo { Name = moduleFolder.Name, Assembly = assembly, Path = moduleFolder.FullName });
-                    }
-                }
-            }
+					if (assembly.FullName.Contains(moduleFolder.Name))
+					{
+						plugins.Add(new PluginInfo { Name = moduleFolder.Name, Assembly = assembly, Path = moduleFolder.FullName });
+					}
+				}
+			}
 
-            return plugins;
-        }
-    }
+			return plugins;
+		}
+	}
 }

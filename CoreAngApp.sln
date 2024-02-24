@@ -71,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotificationApp.Domain", "M
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignalRClient", "SignalRClient\SignalRClient\SignalRClient.csproj", "{CC3DA1A2-27ED-48AE-A0DC-6B1D13D797B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Middleware", "Core.Middleware\Core.Middleware.csproj", "{215FA07B-0819-497F-8743-03BE2578EAFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Middleware", "Core.Middleware\Core.Middleware.csproj", "{215FA07B-0819-497F-8743-03BE2578EAFC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
